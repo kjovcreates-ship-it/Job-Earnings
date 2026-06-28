@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Earnings Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Auth Screen ── -->
+  <div id="auth-screen">
+    <div class="auth-card">
+      <div class="auth-logo">EarningsTracker</div>
+      <div class="auth-sub">Your personal earnings log</div>
+      <label for="auth-email">Email</label>
+      <input id="auth-email" type="email" placeholder="you@email.com" />
+      <label for="auth-pass">Password</label>
+      <input id="auth-pass" type="password" placeholder="••••••••" />
+      <div id="auth-error" class="auth-error"></div>
+      <div class="auth-btns">
+        <button class="btn-primary" id="btn-login">Log In</button>
+        <button class="btn-secondary" id="btn-register">Register</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── App Screen ── -->
+  <div id="app-screen">
+    <header>
+      <div class="header-logo">EarningsTracker</div>
+      <button class="btn-logout" id="btn-logout">Log out</button>
+    </header>
+    <main>
+
+      <!-- Summary -->
+      <div class="summary-bar">
+        <div class="sum-card">
+          <div class="sum-label">Total Earnings</div>
+          <div class="sum-value accent" id="sum-total">₱0.00</div>
+        </div>
+        <div class="sum-card">
+          <div class="sum-label">Paid</div>
+          <div class="sum-value green" id="sum-paid">₱0.00</div>
+        </div>
+        <div class="sum-card">
+          <div class="sum-label">Pending</div>
+          <div class="sum-value orange" id="sum-pend">₱0.00</div>
+        </div>
+        <div class="sum-card">
+          <div class="sum-label">Entries</div>
+          <div class="sum-value" id="sum-count">0</div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <input type="text"  id="filter-company" placeholder="Filter by company…" />
+        <input type="month" id="filter-month" />
+        <button class="btn-clear" id="btn-clear-filter">Clear</button>
+        <button class="btn-add" id="btn-open-add">+ Add Earning</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="company">By Company</button>
+        <button class="tab-btn"        data-tab="month">By Month</button>
+      </div>
+
+      <!-- List -->
+      <div id="earnings-list"></div>
+
+    </main>
+  </div>
+
+  <!-- ── Modal ── -->
+  <div id="modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="modal-title">Add Earning</h2>
+        <button class="btn-close" id="btn-close-modal">✕</button>
+      </div>
+      <div class="form-grid">
+        <div class="field full">
+          <label for="f-company">Company</label>
+          <input id="f-company" type="text" placeholder="e.g. Acme Corp" />
+        </div>
+        <div class="field">
+          <label for="f-date">Date</label>
+          <input id="f-date" type="date" />
+        </div>
+        <div class="field">
+          <label for="f-amount">Amount (₱)</label>
+          <input id="f-amount" type="number" min="0" step="0.01" placeholder="0.00" />
+        </div>
+        <div class="field full">
+          <label for="f-status">Payment Status</label>
+          <select id="f-status">
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="f-notes">Notes (optional)</label>
+          <textarea id="f-notes" rows="3" placeholder="e.g. Project name, invoice number…"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="btn-cancel-modal">Cancel</button>
+        <button class="btn-primary"   id="btn-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
