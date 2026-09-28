@@ -34,157 +34,84 @@ import {
 // ── Firebase Config ─────────────────────────────────────────────────────────
 
 const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyByrrAl0TtCdinZkuCqoDjRx97niRQWv5Q",
-
-  authDomain:
-    "job-earnings-4871a.firebaseapp.com",
-
-  projectId:
-    "job-earnings-4871a",
-
-  storageBucket:
-    "job-earnings-4871a.firebasestorage.app",
-
-  messagingSenderId:
-    "459548048021",
-
-  appId:
-    "1:459548048021:web:7339d69059438cde40399c"
-
+  apiKey: "AIzaSyByrrAl0TtCdinZkuCqoDjRx97niRQWv5Q",
+  authDomain: "job-earnings-4871a.firebaseapp.com",
+  projectId: "job-earnings-4871a",
+  storageBucket: "job-earnings-4871a.firebasestorage.app",
+  messagingSenderId: "459548048021",
+  appId: "1:459548048021:web:7339d69059438cde40399c"
 };
 
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
-
 const db = getFirestore(app);
 
 
 // ── State ───────────────────────────────────────────────────────────────────
 
 let currentUser = null;
-
 let allEarnings = [];
-
 let allClients = [];
-
 let editingId = null;
-
 let activeTab = "all";
-
 let reopenEarningModalAfterClient = false;
 
 
-// ── DOM References ──────────────────────────────────────────────────────────
+// ── DOM ─────────────────────────────────────────────────────────────────────
 
-const authScreen =
-  document.getElementById("auth-screen");
+const authScreen = document.getElementById("auth-screen");
+const appScreen = document.getElementById("app-screen");
 
-const appScreen =
-  document.getElementById("app-screen");
+const authEmail = document.getElementById("auth-email");
+const authPass = document.getElementById("auth-pass");
+const authError = document.getElementById("auth-error");
+const rememberMe = document.getElementById("remember-me");
 
+const modal = document.getElementById("modal");
+const clientModal = document.getElementById("client-modal");
 
-const authEmail =
-  document.getElementById("auth-email");
+const modalTitle = document.getElementById("modal-title");
+const earningsList = document.getElementById("earnings-list");
 
-const authPass =
-  document.getElementById("auth-pass");
+const filterCompany = document.getElementById("filter-company");
+const filterMonth = document.getElementById("filter-month");
 
-const authError =
-  document.getElementById("auth-error");
+const fCompany = document.getElementById("f-company");
+const fDate = document.getElementById("f-date");
+const fAmount = document.getElementById("f-amount");
+const fStatus = document.getElementById("f-status");
+const fNotes = document.getElementById("f-notes");
 
-const rememberMe =
-  document.getElementById("remember-me");
+const fClientName = document.getElementById("f-client-name");
 
-
-const modal =
-  document.getElementById("modal");
-
-const clientModal =
-  document.getElementById("client-modal");
-
-
-const modalTitle =
-  document.getElementById("modal-title");
-
-const earningsList =
-  document.getElementById("earnings-list");
-
-
-const filterCompany =
-  document.getElementById("filter-company");
-
-const filterMonth =
-  document.getElementById("filter-month");
-
-
-const fCompany =
-  document.getElementById("f-company");
-
-const fDate =
-  document.getElementById("f-date");
-
-const fAmount =
-  document.getElementById("f-amount");
-
-const fStatus =
-  document.getElementById("f-status");
-
-const fNotes =
-  document.getElementById("f-notes");
-
-
-const fClientName =
-  document.getElementById("f-client-name");
-
-
-const btnSave =
-  document.getElementById("btn-save");
-
-const btnSaveClient =
-  document.getElementById("btn-save-client");
-
-const btnTheme =
-  document.getElementById("btn-theme");
+const btnSave = document.getElementById("btn-save");
+const btnSaveClient = document.getElementById("btn-save-client");
+const btnTheme = document.getElementById("btn-theme");
 
 
 // ── Theme ───────────────────────────────────────────────────────────────────
 
-const savedTheme =
-  localStorage.getItem("theme");
-
+const savedTheme = localStorage.getItem("theme");
 
 if (savedTheme === "light") {
-
   document.body.classList.add("light-mode");
-
 }
-
 
 updateThemeButton();
 
 
 btnTheme.addEventListener("click", () => {
 
-  document.body.classList.toggle(
-    "light-mode"
-  );
-
+  document.body.classList.toggle("light-mode");
 
   const isLight =
-    document.body.classList.contains(
-      "light-mode"
-    );
-
+    document.body.classList.contains("light-mode");
 
   localStorage.setItem(
     "theme",
     isLight ? "light" : "dark"
   );
-
 
   updateThemeButton();
 
@@ -194,92 +121,104 @@ btnTheme.addEventListener("click", () => {
 function updateThemeButton() {
 
   const isLight =
-    document.body.classList.contains(
-      "light-mode"
-    );
+    document.body.classList.contains("light-mode");
 
 
-  btnTheme.textContent =
-    isLight ? "🌙" : "☀️";
+  if (isLight) {
 
+    // Moon icon
+    btnTheme.innerHTML = `
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          d="M21 12.79A9 9 0 1 1 11.21 3
+             7 7 0 0 0 21 12.79z"
+        />
+      </svg>
+    `;
 
-  btnTheme.title =
-    isLight
-      ? "Switch to dark mode"
-      : "Switch to light mode";
+    btnTheme.title = "Switch to dark mode";
+    btnTheme.setAttribute("aria-label", "Switch to dark mode");
+
+  } else {
+
+    // Sun icon
+    btnTheme.innerHTML = `
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2"/>
+        <path d="M12 20v2"/>
+        <path d="m4.93 4.93 1.41 1.41"/>
+        <path d="m17.66 17.66 1.41 1.41"/>
+        <path d="M2 12h2"/>
+        <path d="M20 12h2"/>
+        <path d="m6.34 17.66-1.41 1.41"/>
+        <path d="m19.07 4.93-1.41 1.41"/>
+      </svg>
+    `;
+
+    btnTheme.title = "Switch to light mode";
+    btnTheme.setAttribute("aria-label", "Switch to light mode");
+
+  }
 
 }
 
 
 // ── Auth State ──────────────────────────────────────────────────────────────
 
-onAuthStateChanged(
-  auth,
-  async (user) => {
+onAuthStateChanged(auth, async (user) => {
 
-    currentUser = user;
+  currentUser = user;
 
+  if (user) {
 
-    if (user) {
+    showApp();
 
-      showApp();
+    await loadEarnings();
+    await loadClients();
 
-      await loadEarnings();
+  } else {
 
-      await loadClients();
+    allEarnings = [];
+    allClients = [];
 
-    } else {
-
-      allEarnings = [];
-
-      allClients = [];
-
-      showAuth();
-
-    }
+    showAuth();
 
   }
-);
+
+});
 
 
 // ── Authentication ──────────────────────────────────────────────────────────
 
 document
   .getElementById("btn-login")
-  .addEventListener(
-    "click",
-    handleLogin
-  );
+  .addEventListener("click", handleLogin);
 
 
 document
   .getElementById("btn-register")
-  .addEventListener(
-    "click",
-    handleRegister
-  );
+  .addEventListener("click", handleRegister);
 
 
 document
   .getElementById("btn-logout")
-  .addEventListener(
-    "click",
-    handleLogout
-  );
+  .addEventListener("click", handleLogout);
 
 
-authPass.addEventListener(
-  "keydown",
-  (e) => {
+authPass.addEventListener("keydown", (e) => {
 
-    if (e.key === "Enter") {
-
-      handleLogin();
-
-    }
-
+  if (e.key === "Enter") {
+    handleLogin();
   }
-);
+
+});
 
 
 async function setChosenPersistence() {
@@ -289,11 +228,7 @@ async function setChosenPersistence() {
       ? browserLocalPersistence
       : browserSessionPersistence;
 
-
-  await setPersistence(
-    auth,
-    persistence
-  );
+  await setPersistence(auth, persistence);
 
 }
 
@@ -302,11 +237,9 @@ async function handleLogin() {
 
   setAuthError("");
 
-
   try {
 
     await setChosenPersistence();
-
 
     await signInWithEmailAndPassword(
       auth,
@@ -329,11 +262,9 @@ async function handleRegister() {
 
   setAuthError("");
 
-
   try {
 
     await setChosenPersistence();
-
 
     await createUserWithEmailAndPassword(
       auth,
@@ -353,9 +284,7 @@ async function handleRegister() {
 
 
 async function handleLogout() {
-
   await signOut(auth);
-
 }
 
 
@@ -365,42 +294,20 @@ async function loadEarnings() {
 
   if (!currentUser) return;
 
-
   try {
 
     const q = query(
-
-      collection(
-        db,
-        "earnings"
-      ),
-
-      where(
-        "uid",
-        "==",
-        currentUser.uid
-      ),
-
-      orderBy(
-        "date",
-        "desc"
-      )
-
+      collection(db, "earnings"),
+      where("uid", "==", currentUser.uid),
+      orderBy("date", "desc")
     );
 
+    const snap = await getDocs(q);
 
-    const snap =
-      await getDocs(q);
-
-
-    allEarnings =
-      snap.docs.map(
-        (d) => ({
-          id: d.id,
-          ...d.data()
-        })
-      );
-
+    allEarnings = snap.docs.map((d) => ({
+      id: d.id,
+      ...d.data()
+    }));
 
     render();
 
@@ -411,18 +318,14 @@ async function loadEarnings() {
       e
     );
 
-
     earningsList.innerHTML = `
       <div class="empty-state">
-
         <div class="empty-title">
           Could not load earnings
         </div>
-
         <div class="empty-text">
           Please refresh and try again.
         </div>
-
       </div>
     `;
 
@@ -437,42 +340,22 @@ async function loadClients() {
 
   if (!currentUser) return;
 
-
   try {
 
     const q = query(
-
-      collection(
-        db,
-        "clients"
-      ),
-
-      where(
-        "uid",
-        "==",
-        currentUser.uid
-      )
-
+      collection(db, "clients"),
+      where("uid", "==", currentUser.uid)
     );
 
+    const snap = await getDocs(q);
 
-    const snap =
-      await getDocs(q);
-
-
-    allClients =
-      snap.docs.map(
-        (d) => ({
-          id: d.id,
-          ...d.data()
-        })
-      );
-
+    allClients = snap.docs.map((d) => ({
+      id: d.id,
+      ...d.data()
+    }));
 
     mergeExistingEarningCompanies();
-
     sortClients();
-
     populateClientDropdowns();
 
   } catch (e) {
@@ -482,18 +365,10 @@ async function loadClients() {
       e
     );
 
-
-    /*
-      If the clients collection isn't available yet,
-      old company names still remain usable.
-    */
-
     allClients = [];
 
     mergeExistingEarningCompanies();
-
     sortClients();
-
     populateClientDropdowns();
 
   }
@@ -514,45 +389,35 @@ function mergeExistingEarningCompanies() {
     );
 
 
-  allEarnings.forEach(
-    (earning) => {
+  allEarnings.forEach((earning) => {
 
-      const name =
-        String(
-          earning.company || ""
-        ).trim();
+    const name =
+      String(
+        earning.company || ""
+      ).trim();
 
+    if (!name) return;
 
-      if (!name) return;
+    if (
+      !existingNames.has(
+        name.toLowerCase()
+      )
+    ) {
 
+      allClients.push({
+        id: null,
+        name,
+        uid: currentUser.uid,
+        legacy: true
+      });
 
-      if (
-        !existingNames.has(
-          name.toLowerCase()
-        )
-      ) {
-
-        allClients.push({
-
-          id: null,
-
-          name,
-
-          uid: currentUser.uid,
-
-          legacy: true
-
-        });
-
-
-        existingNames.add(
-          name.toLowerCase()
-        );
-
-      }
+      existingNames.add(
+        name.toLowerCase()
+      );
 
     }
-  );
+
+  });
 
 }
 
@@ -561,9 +426,7 @@ function sortClients() {
 
   allClients.sort(
     (a, b) =>
-      a.name.localeCompare(
-        b.name
-      )
+      a.name.localeCompare(b.name)
   );
 
 }
@@ -594,53 +457,42 @@ function populateClientDropdowns() {
   `;
 
 
-  allClients.forEach(
-    (client) => {
+  allClients.forEach((client) => {
 
-      const formOption =
-        document.createElement(
-          "option"
-        );
+    const formOption =
+      document.createElement("option");
 
+    formOption.value =
+      client.name;
 
-      formOption.value =
-        client.name;
+    formOption.textContent =
+      client.name;
 
-      formOption.textContent =
-        client.name;
-
-
-      fCompany.appendChild(
-        formOption
-      );
+    fCompany.appendChild(
+      formOption
+    );
 
 
-      const filterOption =
-        document.createElement(
-          "option"
-        );
+    const filterOption =
+      document.createElement("option");
 
+    filterOption.value =
+      client.name;
 
-      filterOption.value =
-        client.name;
+    filterOption.textContent =
+      client.name;
 
-      filterOption.textContent =
-        client.name;
+    filterCompany.appendChild(
+      filterOption
+    );
 
-
-      filterCompany.appendChild(
-        filterOption
-      );
-
-    }
-  );
+  });
 
 
   if (
     [...fCompany.options].some(
       (option) =>
-        option.value ===
-        currentFormValue
+        option.value === currentFormValue
     )
   ) {
 
@@ -653,8 +505,7 @@ function populateClientDropdowns() {
   if (
     [...filterCompany.options].some(
       (option) =>
-        option.value ===
-        currentFilterValue
+        option.value === currentFilterValue
     )
   ) {
 
@@ -669,61 +520,37 @@ function populateClientDropdowns() {
 // ── Client Modal ─────────────────────────────────────────────────────────────
 
 document
-  .getElementById(
-    "btn-open-client"
-  )
-  .addEventListener(
-    "click",
-    () => {
+  .getElementById("btn-open-client")
+  .addEventListener("click", () => {
 
-      reopenEarningModalAfterClient =
-        false;
+    reopenEarningModalAfterClient = false;
 
-      openClientModal();
+    openClientModal();
 
-    }
-  );
+  });
 
 
 document
-  .getElementById(
-    "btn-add-client-from-earning"
-  )
-  .addEventListener(
-    "click",
-    () => {
+  .getElementById("btn-add-client-from-earning")
+  .addEventListener("click", () => {
 
-      reopenEarningModalAfterClient =
-        true;
+    reopenEarningModalAfterClient = true;
 
-      modal.classList.remove(
-        "show"
-      );
+    modal.classList.remove("show");
 
-      openClientModal();
+    openClientModal();
 
-    }
-  );
+  });
 
 
 document
-  .getElementById(
-    "btn-close-client"
-  )
-  .addEventListener(
-    "click",
-    closeClientModal
-  );
+  .getElementById("btn-close-client")
+  .addEventListener("click", closeClientModal);
 
 
 document
-  .getElementById(
-    "btn-cancel-client"
-  )
-  .addEventListener(
-    "click",
-    closeClientModal
-  );
+  .getElementById("btn-cancel-client")
+  .addEventListener("click", closeClientModal);
 
 
 btnSaveClient.addEventListener(
@@ -732,77 +559,48 @@ btnSaveClient.addEventListener(
 );
 
 
-clientModal.addEventListener(
-  "click",
-  (e) => {
+clientModal.addEventListener("click", (e) => {
 
-    if (
-      e.target === clientModal
-    ) {
-
-      closeClientModal();
-
-    }
-
+  if (e.target === clientModal) {
+    closeClientModal();
   }
-);
+
+});
 
 
-fClientName.addEventListener(
-  "keydown",
-  (e) => {
+fClientName.addEventListener("keydown", (e) => {
 
-    if (e.key === "Enter") {
-
-      saveClient();
-
-    }
-
+  if (e.key === "Enter") {
+    saveClient();
   }
-);
+
+});
 
 
 function openClientModal() {
 
   fClientName.value = "";
 
-  clientModal.classList.add(
-    "show"
-  );
+  clientModal.classList.add("show");
 
-
-  setTimeout(
-    () => {
-
-      fClientName.focus();
-
-    },
-    50
-  );
+  setTimeout(() => {
+    fClientName.focus();
+  }, 50);
 
 }
 
 
 function closeClientModal() {
 
-  clientModal.classList.remove(
-    "show"
-  );
-
+  clientModal.classList.remove("show");
 
   fClientName.value = "";
 
+  if (reopenEarningModalAfterClient) {
 
-  if (
-    reopenEarningModalAfterClient
-  ) {
+    reopenEarningModalAfterClient = false;
 
-    reopenEarningModalAfterClient =
-      false;
-
-    modal.classList.add(
-      "show"
-    );
+    modal.classList.add("show");
 
   }
 
@@ -846,43 +644,27 @@ async function saveClient() {
 
 
   btnSaveClient.disabled = true;
-
-  btnSaveClient.textContent =
-    "Adding…";
+  btnSaveClient.textContent = "Adding...";
 
 
   try {
 
     const data = {
-
-      uid:
-        currentUser.uid,
-
+      uid: currentUser.uid,
       name
-
     };
 
 
     const docRef =
       await addDoc(
-
-        collection(
-          db,
-          "clients"
-        ),
-
+        collection(db, "clients"),
         data
-
       );
 
 
     allClients.push({
-
-      id:
-        docRef.id,
-
+      id: docRef.id,
       ...data
-
     });
 
 
@@ -890,29 +672,18 @@ async function saveClient() {
 
     populateClientDropdowns();
 
+    fCompany.value = name;
 
-    fCompany.value =
-      name;
-
-
-    clientModal.classList.remove(
-      "show"
-    );
-
+    clientModal.classList.remove("show");
 
     fClientName.value = "";
 
 
-    if (
-      reopenEarningModalAfterClient
-    ) {
+    if (reopenEarningModalAfterClient) {
 
-      reopenEarningModalAfterClient =
-        false;
+      reopenEarningModalAfterClient = false;
 
-      modal.classList.add(
-        "show"
-      );
+      modal.classList.add("show");
 
     }
 
@@ -925,8 +696,7 @@ async function saveClient() {
 
   } finally {
 
-    btnSaveClient.disabled =
-      false;
+    btnSaveClient.disabled = false;
 
     btnSaveClient.textContent =
       "Add Client";
@@ -939,33 +709,18 @@ async function saveClient() {
 // ── Earning Modal ───────────────────────────────────────────────────────────
 
 document
-  .getElementById(
-    "btn-open-add"
-  )
-  .addEventListener(
-    "click",
-    openAddModal
-  );
+  .getElementById("btn-open-add")
+  .addEventListener("click", openAddModal);
 
 
 document
-  .getElementById(
-    "btn-close-modal"
-  )
-  .addEventListener(
-    "click",
-    closeModal
-  );
+  .getElementById("btn-close-modal")
+  .addEventListener("click", closeModal);
 
 
 document
-  .getElementById(
-    "btn-cancel-modal"
-  )
-  .addEventListener(
-    "click",
-    closeModal
-  );
+  .getElementById("btn-cancel-modal")
+  .addEventListener("click", closeModal);
 
 
 btnSave.addEventListener(
@@ -974,18 +729,13 @@ btnSave.addEventListener(
 );
 
 
-modal.addEventListener(
-  "click",
-  (e) => {
+modal.addEventListener("click", (e) => {
 
-    if (e.target === modal) {
-
-      closeModal();
-
-    }
-
+  if (e.target === modal) {
+    closeModal();
   }
-);
+
+});
 
 
 function openAddModal() {
@@ -997,18 +747,14 @@ function openAddModal() {
   modalTitle.textContent =
     "Add Earning";
 
-  modal.classList.add(
-    "show"
-  );
+  modal.classList.add("show");
 
 }
 
 
 function closeModal() {
 
-  modal.classList.remove(
-    "show"
-  );
+  modal.classList.remove("show");
 
   editingId = null;
 
@@ -1020,13 +766,9 @@ function closeModal() {
 function clearForm() {
 
   fCompany.value = "";
-
   fDate.value = "";
-
   fAmount.value = "";
-
   fStatus.value = "paid";
-
   fNotes.value = "";
 
 }
@@ -1038,22 +780,16 @@ async function saveEarning() {
 
   const data = {
 
-    uid:
-      currentUser.uid,
+    uid: currentUser.uid,
 
-    company:
-      fCompany.value,
+    company: fCompany.value,
 
-    date:
-      fDate.value,
+    date: fDate.value,
 
     amount:
-      parseFloat(
-        fAmount.value
-      ) || 0,
+      parseFloat(fAmount.value) || 0,
 
-    status:
-      fStatus.value,
+    status: fStatus.value,
 
     notes:
       fNotes.value.trim()
@@ -1084,28 +820,22 @@ async function saveEarning() {
     if (editingId) {
 
       await updateDoc(
-
         doc(
           db,
           "earnings",
           editingId
         ),
-
         data
-
       );
 
     } else {
 
       await addDoc(
-
         collection(
           db,
           "earnings"
         ),
-
         data
-
       );
 
     }
@@ -1164,17 +894,13 @@ function editEarning(id) {
   ) {
 
     const option =
-      document.createElement(
-        "option"
-      );
-
+      document.createElement("option");
 
     option.value =
       entry.company;
 
     option.textContent =
       entry.company;
-
 
     fCompany.appendChild(
       option
@@ -1203,9 +929,7 @@ function editEarning(id) {
     "Edit Earning";
 
 
-  modal.classList.add(
-    "show"
-  );
+  modal.classList.add("show");
 
 }
 
@@ -1219,24 +943,19 @@ async function deleteEarning(id) {
       "Delete this earning?"
     )
   ) {
-
     return;
-
   }
 
 
   try {
 
     await deleteDoc(
-
       doc(
         db,
         "earnings",
         id
       )
-
     );
-
 
     await loadEarnings();
 
@@ -1255,47 +974,32 @@ async function deleteEarning(id) {
 // ── Tabs ────────────────────────────────────────────────────────────────────
 
 document
-  .querySelectorAll(
-    ".tab-btn"
-  )
-  .forEach(
-    (btn) => {
+  .querySelectorAll(".tab-btn")
+  .forEach((btn) => {
 
-      btn.addEventListener(
-        "click",
-        () => {
+    btn.addEventListener("click", () => {
 
-          activeTab =
-            btn.dataset.tab;
+      activeTab =
+        btn.dataset.tab;
 
 
-          document
-            .querySelectorAll(
-              ".tab-btn"
-            )
-            .forEach(
-              (button) => {
+      document
+        .querySelectorAll(".tab-btn")
+        .forEach((button) => {
 
-                button.classList.toggle(
+          button.classList.toggle(
+            "active",
+            button.dataset.tab === activeTab
+          );
 
-                  "active",
-
-                  button.dataset.tab ===
-                    activeTab
-
-                );
-
-              }
-            );
+        });
 
 
-          render();
+      render();
 
-        }
-      );
+    });
 
-    }
-  );
+  });
 
 
 // ── Filters ─────────────────────────────────────────────────────────────────
@@ -1313,21 +1017,15 @@ filterMonth.addEventListener(
 
 
 document
-  .getElementById(
-    "btn-clear-filter"
-  )
-  .addEventListener(
-    "click",
-    () => {
+  .getElementById("btn-clear-filter")
+  .addEventListener("click", () => {
 
-      filterCompany.value = "";
+    filterCompany.value = "";
+    filterMonth.value = "";
 
-      filterMonth.value = "";
+    render();
 
-      render();
-
-    }
-  );
+  });
 
 
 // ── Render ──────────────────────────────────────────────────────────────────
@@ -1338,9 +1036,7 @@ function render() {
     [...allEarnings];
 
 
-  if (
-    filterCompany.value
-  ) {
+  if (filterCompany.value) {
 
     data =
       data.filter(
@@ -1352,9 +1048,7 @@ function render() {
   }
 
 
-  if (
-    filterMonth.value
-  ) {
+  if (filterMonth.value) {
 
     data =
       data.filter(
@@ -1370,9 +1064,7 @@ function render() {
   updateSummaryBar(data);
 
 
-  if (
-    activeTab === "all"
-  ) {
+  if (activeTab === "all") {
 
     renderAll(data);
 
@@ -1399,9 +1091,7 @@ function updateSummaryBar(data) {
     data.reduce(
       (sum, entry) =>
         sum +
-        Number(
-          entry.amount || 0
-        ),
+        Number(entry.amount || 0),
       0
     );
 
@@ -1415,9 +1105,7 @@ function updateSummaryBar(data) {
       .reduce(
         (sum, entry) =>
           sum +
-          Number(
-            entry.amount || 0
-          ),
+          Number(entry.amount || 0),
         0
       );
 
@@ -1426,47 +1114,36 @@ function updateSummaryBar(data) {
     data
       .filter(
         (entry) =>
-          entry.status ===
-          "pending"
+          entry.status === "pending"
       )
       .reduce(
         (sum, entry) =>
           sum +
-          Number(
-            entry.amount || 0
-          ),
+          Number(entry.amount || 0),
         0
       );
 
 
   document
-    .getElementById(
-      "sum-total"
-    )
+    .getElementById("sum-total")
     .textContent =
       fmt(total);
 
 
   document
-    .getElementById(
-      "sum-paid"
-    )
+    .getElementById("sum-paid")
     .textContent =
       fmt(paid);
 
 
   document
-    .getElementById(
-      "sum-pend"
-    )
+    .getElementById("sum-pend")
     .textContent =
       fmt(pending);
 
 
   document
-    .getElementById(
-      "sum-count"
-    )
+    .getElementById("sum-count")
     .textContent =
       data.length;
 
@@ -1492,29 +1169,20 @@ function renderAll(data) {
   const groups = {};
 
 
-  data.forEach(
-    (entry) => {
+  data.forEach((entry) => {
 
-      const month =
-        entry.date.slice(
-          0,
-          7
-        );
+    const month =
+      entry.date.slice(0, 7);
 
 
-      if (!groups[month]) {
-
-        groups[month] = [];
-
-      }
-
-
-      groups[month].push(
-        entry
-      );
-
+    if (!groups[month]) {
+      groups[month] = [];
     }
-  );
+
+
+    groups[month].push(entry);
+
+  });
 
 
   Object
@@ -1530,29 +1198,21 @@ function renderAll(data) {
           items.reduce(
             (sum, entry) =>
               sum +
-              Number(
-                entry.amount || 0
-              ),
+              Number(entry.amount || 0),
             0
           );
 
 
         earningsList.appendChild(
-
           makeGroup(
-
             formatMonth(month),
-
             `${items.length} ${
               items.length === 1
                 ? "entry"
                 : "entries"
             } · ${fmt(total)} total`,
-
             items
-
           )
-
         );
 
       }
@@ -1568,33 +1228,21 @@ function renderByCompany(data) {
   const groups = {};
 
 
-  data.forEach(
-    (entry) => {
+  data.forEach((entry) => {
 
-      if (
-        !groups[entry.company]
-      ) {
-
-        groups[entry.company] =
-          [];
-
-      }
-
-
-      groups[
-        entry.company
-      ].push(entry);
-
+    if (!groups[entry.company]) {
+      groups[entry.company] = [];
     }
-  );
+
+    groups[entry.company].push(entry);
+
+  });
 
 
   earningsList.innerHTML = "";
 
 
-  if (
-    !Object.keys(groups).length
-  ) {
+  if (!Object.keys(groups).length) {
 
     emptyState();
 
@@ -1616,9 +1264,7 @@ function renderByCompany(data) {
           items.reduce(
             (sum, entry) =>
               sum +
-              Number(
-                entry.amount || 0
-              ),
+              Number(entry.amount || 0),
             0
           );
 
@@ -1633,9 +1279,7 @@ function renderByCompany(data) {
             .reduce(
               (sum, entry) =>
                 sum +
-                Number(
-                  entry.amount || 0
-                ),
+                Number(entry.amount || 0),
               0
             );
 
@@ -1648,9 +1292,7 @@ function renderByCompany(data) {
           } · ${fmt(total)} total`;
 
 
-        if (
-          pending > 0
-        ) {
+        if (pending > 0) {
 
           subtitle +=
             ` · ${fmt(pending)} pending`;
@@ -1664,13 +1306,11 @@ function renderByCompany(data) {
 
 
         earningsList.appendChild(
-
           makeGroup(
             company,
             subtitle,
             items
           )
-
         );
 
       }
@@ -1686,37 +1326,26 @@ function renderByMonth(data) {
   const groups = {};
 
 
-  data.forEach(
-    (entry) => {
+  data.forEach((entry) => {
 
-      const key =
-        entry.date.slice(
-          0,
-          7
-        );
+    const key =
+      entry.date.slice(0, 7);
 
 
-      if (!groups[key]) {
-
-        groups[key] = [];
-
-      }
-
-
-      groups[key].push(
-        entry
-      );
-
+    if (!groups[key]) {
+      groups[key] = [];
     }
-  );
+
+
+    groups[key].push(entry);
+
+  });
 
 
   earningsList.innerHTML = "";
 
 
-  if (
-    !Object.keys(groups).length
-  ) {
+  if (!Object.keys(groups).length) {
 
     emptyState();
 
@@ -1738,29 +1367,21 @@ function renderByMonth(data) {
           items.reduce(
             (sum, entry) =>
               sum +
-              Number(
-                entry.amount || 0
-              ),
+              Number(entry.amount || 0),
             0
           );
 
 
         earningsList.appendChild(
-
           makeGroup(
-
             formatMonth(month),
-
             `${items.length} ${
               items.length === 1
                 ? "entry"
                 : "entries"
             } · ${fmt(total)} total`,
-
             items
-
           )
-
         );
 
       }
@@ -1778,40 +1399,28 @@ function makeGroup(
 ) {
 
   const section =
-    document.createElement(
-      "div"
-    );
-
+    document.createElement("div");
 
   section.className =
     "group-section";
 
 
   const header =
-    document.createElement(
-      "div"
-    );
-
+    document.createElement("div");
 
   header.className =
     "group-header";
 
 
   const headerText =
-    document.createElement(
-      "div"
-    );
-
+    document.createElement("div");
 
   headerText.className =
     "group-header-text";
 
 
   const titleElement =
-    document.createElement(
-      "span"
-    );
-
+    document.createElement("span");
 
   titleElement.className =
     "group-title";
@@ -1821,10 +1430,7 @@ function makeGroup(
 
 
   const subtitleElement =
-    document.createElement(
-      "span"
-    );
-
+    document.createElement("span");
 
   subtitleElement.className =
     "group-sub";
@@ -1837,16 +1443,13 @@ function makeGroup(
     titleElement
   );
 
-
   headerText.appendChild(
     subtitleElement
   );
 
-
   header.appendChild(
     headerText
   );
-
 
   section.appendChild(
     header
@@ -1856,19 +1459,15 @@ function makeGroup(
   [...items]
     .sort(
       (a, b) =>
-        b.date.localeCompare(
-          a.date
-        )
+        b.date.localeCompare(a.date)
     )
-    .forEach(
-      (entry) => {
+    .forEach((entry) => {
 
-        section.appendChild(
-          makeEntryRow(entry)
-        );
+      section.appendChild(
+        makeEntryRow(entry)
+      );
 
-      }
-    );
+    });
 
 
   return section;
@@ -1881,30 +1480,21 @@ function makeGroup(
 function makeEntryRow(entry) {
 
   const row =
-    document.createElement(
-      "div"
-    );
-
+    document.createElement("div");
 
   row.className =
     "entry-row";
 
 
   const left =
-    document.createElement(
-      "div"
-    );
-
+    document.createElement("div");
 
   left.className =
     "entry-left";
 
 
   const company =
-    document.createElement(
-      "span"
-    );
-
+    document.createElement("span");
 
   company.className =
     "entry-company";
@@ -1914,37 +1504,23 @@ function makeEntryRow(entry) {
 
 
   const date =
-    document.createElement(
-      "span"
-    );
-
+    document.createElement("span");
 
   date.className =
     "entry-date";
 
   date.textContent =
-    formatDate(
-      entry.date
-    );
+    formatDate(entry.date);
 
 
-  left.appendChild(
-    company
-  );
-
-
-  left.appendChild(
-    date
-  );
+  left.appendChild(company);
+  left.appendChild(date);
 
 
   if (entry.notes) {
 
     const notes =
-      document.createElement(
-        "span"
-      );
-
+      document.createElement("span");
 
     notes.className =
       "entry-notes";
@@ -1952,44 +1528,30 @@ function makeEntryRow(entry) {
     notes.textContent =
       entry.notes;
 
-
-    left.appendChild(
-      notes
-    );
+    left.appendChild(notes);
 
   }
 
 
   const right =
-    document.createElement(
-      "div"
-    );
-
+    document.createElement("div");
 
   right.className =
     "entry-right";
 
 
   const amount =
-    document.createElement(
-      "span"
-    );
-
+    document.createElement("span");
 
   amount.className =
     "entry-amount";
 
   amount.textContent =
-    fmt(
-      entry.amount
-    );
+    fmt(entry.amount);
 
 
   const badge =
-    document.createElement(
-      "span"
-    );
-
+    document.createElement("span");
 
   badge.className =
     `badge ${entry.status}`;
@@ -1999,20 +1561,15 @@ function makeEntryRow(entry) {
 
 
   const actions =
-    document.createElement(
-      "div"
-    );
-
+    document.createElement("div");
 
   actions.className =
     "entry-actions";
 
 
+  // Edit button
   const editButton =
-    document.createElement(
-      "button"
-    );
-
+    document.createElement("button");
 
   editButton.className =
     "btn-icon";
@@ -2028,30 +1585,32 @@ function makeEntryRow(entry) {
     "Edit earning"
   );
 
-  editButton.textContent =
-    "✏️";
+
+  editButton.innerHTML = `
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M12 20h9"/>
+      <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+    </svg>
+  `;
 
 
   editButton.addEventListener(
     "click",
     () => {
-
-      editEarning(
-        entry.id
-      );
-
+      editEarning(entry.id);
     }
   );
 
 
+  // Delete button
   const deleteButton =
-    document.createElement(
-      "button"
-    );
-
+    document.createElement("button");
 
   deleteButton.className =
-    "btn-icon";
+    "btn-icon btn-icon-delete";
 
   deleteButton.type =
     "button";
@@ -2064,55 +1623,38 @@ function makeEntryRow(entry) {
     "Delete earning"
   );
 
-  deleteButton.textContent =
-    "🗑️";
+
+  deleteButton.innerHTML = `
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path d="M3 6h18"/>
+      <path d="M8 6V4h8v2"/>
+      <path d="M19 6l-1 14H6L5 6"/>
+      <path d="M10 11v5"/>
+      <path d="M14 11v5"/>
+    </svg>
+  `;
 
 
   deleteButton.addEventListener(
     "click",
     () => {
-
-      deleteEarning(
-        entry.id
-      );
-
+      deleteEarning(entry.id);
     }
   );
 
 
-  actions.appendChild(
-    editButton
-  );
+  actions.appendChild(editButton);
+  actions.appendChild(deleteButton);
 
+  right.appendChild(amount);
+  right.appendChild(badge);
+  right.appendChild(actions);
 
-  actions.appendChild(
-    deleteButton
-  );
-
-
-  right.appendChild(
-    amount
-  );
-
-
-  right.appendChild(
-    badge
-  );
-
-
-  right.appendChild(
-    actions
-  );
-
-
-  row.appendChild(
-    left
-  );
-
-
-  row.appendChild(
-    right
-  );
+  row.appendChild(left);
+  row.appendChild(right);
 
 
   return row;
@@ -2125,7 +1667,6 @@ function makeEntryRow(entry) {
 function emptyState() {
 
   earningsList.innerHTML = `
-
     <div class="empty-state">
 
       <div class="empty-icon">
@@ -2141,7 +1682,6 @@ function emptyState() {
       </div>
 
     </div>
-
   `;
 
 }
@@ -2153,9 +1693,7 @@ function fmt(number) {
 
   return (
     "₱" +
-    Number(
-      number || 0
-    ).toLocaleString(
+    Number(number || 0).toLocaleString(
       "en-PH",
       {
         minimumFractionDigits: 2,
@@ -2170,8 +1708,7 @@ function fmt(number) {
 function formatDate(date) {
 
   return new Date(
-    date +
-    "T00:00:00"
+    date + "T00:00:00"
   ).toLocaleDateString(
     "en-PH",
     {
@@ -2187,8 +1724,7 @@ function formatDate(date) {
 function formatMonth(month) {
 
   return new Date(
-    month +
-    "-01T00:00:00"
+    month + "-01T00:00:00"
   ).toLocaleDateString(
     "en-PH",
     {
@@ -2201,10 +1737,7 @@ function formatMonth(month) {
 
 
 function setAuthError(message) {
-
-  authError.textContent =
-    message;
-
+  authError.textContent = message;
 }
 
 
@@ -2212,9 +1745,8 @@ function setSaveLoading(on) {
 
   btnSave.textContent =
     on
-      ? "Saving…"
+      ? "Saving..."
       : "Save";
-
 
   btnSave.disabled =
     on;
