@@ -1,9 +1,8 @@
-// ── Firebase Imports ────────────────────────────────────────────────────────
+// ── Firebase Imports ────────────────────────────────────────────────
 
 import {
   initializeApp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-
 
 import {
   getAuth,
@@ -15,7 +14,6 @@ import {
   browserLocalPersistence,
   browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
 
 import {
   getFirestore,
@@ -31,7 +29,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 
-// ── Firebase Config ─────────────────────────────────────────────────────────
+// ── Firebase Config ─────────────────────────────────────────────────
 
 const firebaseConfig = {
   apiKey: "AIzaSyByrrAl0TtCdinZkuCqoDjRx97niRQWv5Q",
@@ -42,13 +40,12 @@ const firebaseConfig = {
   appId: "1:459548048021:web:7339d69059438cde40399c"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 
-// ── State ───────────────────────────────────────────────────────────────────
+// ── State ────────────────────────────────────────────────────────────
 
 let currentUser = null;
 let allEarnings = [];
@@ -58,7 +55,7 @@ let activeTab = "all";
 let reopenEarningModalAfterClient = false;
 
 
-// ── DOM ─────────────────────────────────────────────────────────────────────
+// ── DOM ──────────────────────────────────────────────────────────────
 
 const authScreen = document.getElementById("auth-screen");
 const appScreen = document.getElementById("app-screen");
@@ -90,7 +87,7 @@ const btnSaveClient = document.getElementById("btn-save-client");
 const btnTheme = document.getElementById("btn-theme");
 
 
-// ── Theme ───────────────────────────────────────────────────────────────────
+// ── Theme ────────────────────────────────────────────────────────────
 
 const savedTheme = localStorage.getItem("theme");
 
@@ -126,10 +123,16 @@ function updateThemeButton() {
 
   if (isLight) {
 
-    // Moon icon
     btnTheme.innerHTML = `
       <svg
         viewBox="0 0 24 24"
+        width="18"
+        height="18"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
         aria-hidden="true"
       >
         <path
@@ -140,37 +143,49 @@ function updateThemeButton() {
     `;
 
     btnTheme.title = "Switch to dark mode";
-    btnTheme.setAttribute("aria-label", "Switch to dark mode");
+    btnTheme.setAttribute(
+      "aria-label",
+      "Switch to dark mode"
+    );
 
   } else {
 
-    // Sun icon
     btnTheme.innerHTML = `
       <svg
         viewBox="0 0 24 24"
+        width="18"
+        height="18"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
         aria-hidden="true"
       >
         <circle cx="12" cy="12" r="4"/>
         <path d="M12 2v2"/>
         <path d="M12 20v2"/>
-        <path d="m4.93 4.93 1.41 1.41"/>
-        <path d="m17.66 17.66 1.41 1.41"/>
+        <path d="M4.93 4.93l1.41 1.41"/>
+        <path d="M17.66 17.66l1.41 1.41"/>
         <path d="M2 12h2"/>
         <path d="M20 12h2"/>
-        <path d="m6.34 17.66-1.41 1.41"/>
-        <path d="m19.07 4.93-1.41 1.41"/>
+        <path d="M6.34 17.66l-1.41 1.41"/>
+        <path d="M19.07 4.93l-1.41 1.41"/>
       </svg>
     `;
 
     btnTheme.title = "Switch to light mode";
-    btnTheme.setAttribute("aria-label", "Switch to light mode");
+    btnTheme.setAttribute(
+      "aria-label",
+      "Switch to light mode"
+    );
 
   }
 
 }
 
 
-// ── Auth State ──────────────────────────────────────────────────────────────
+// ── Auth State ───────────────────────────────────────────────────────
 
 onAuthStateChanged(auth, async (user) => {
 
@@ -195,17 +210,15 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 
-// ── Authentication ──────────────────────────────────────────────────────────
+// ── Authentication ──────────────────────────────────────────────────
 
 document
   .getElementById("btn-login")
   .addEventListener("click", handleLogin);
 
-
 document
   .getElementById("btn-register")
   .addEventListener("click", handleRegister);
-
 
 document
   .getElementById("btn-logout")
@@ -288,7 +301,7 @@ async function handleLogout() {
 }
 
 
-// ── Load Earnings ───────────────────────────────────────────────────────────
+// ── Load Earnings ────────────────────────────────────────────────────
 
 async function loadEarnings() {
 
@@ -323,6 +336,7 @@ async function loadEarnings() {
         <div class="empty-title">
           Could not load earnings
         </div>
+
         <div class="empty-text">
           Please refresh and try again.
         </div>
@@ -334,7 +348,7 @@ async function loadEarnings() {
 }
 
 
-// ── Load Clients ────────────────────────────────────────────────────────────
+// ── Load Clients ─────────────────────────────────────────────────────
 
 async function loadClients() {
 
@@ -376,7 +390,7 @@ async function loadClients() {
 }
 
 
-// ── Existing Earnings Compatibility ────────────────────────────────────────
+// ── Existing Earnings Compatibility ─────────────────────────────────
 
 function mergeExistingEarningCompanies() {
 
@@ -397,6 +411,7 @@ function mergeExistingEarningCompanies() {
       ).trim();
 
     if (!name) return;
+
 
     if (
       !existingNames.has(
@@ -432,7 +447,7 @@ function sortClients() {
 }
 
 
-// ── Client Dropdowns ────────────────────────────────────────────────────────
+// ── Client Dropdowns ─────────────────────────────────────────────────
 
 function populateClientDropdowns() {
 
@@ -462,29 +477,19 @@ function populateClientDropdowns() {
     const formOption =
       document.createElement("option");
 
-    formOption.value =
-      client.name;
+    formOption.value = client.name;
+    formOption.textContent = client.name;
 
-    formOption.textContent =
-      client.name;
-
-    fCompany.appendChild(
-      formOption
-    );
+    fCompany.appendChild(formOption);
 
 
     const filterOption =
       document.createElement("option");
 
-    filterOption.value =
-      client.name;
+    filterOption.value = client.name;
+    filterOption.textContent = client.name;
 
-    filterOption.textContent =
-      client.name;
-
-    filterCompany.appendChild(
-      filterOption
-    );
+    filterCompany.appendChild(filterOption);
 
   });
 
@@ -495,10 +500,7 @@ function populateClientDropdowns() {
         option.value === currentFormValue
     )
   ) {
-
-    fCompany.value =
-      currentFormValue;
-
+    fCompany.value = currentFormValue;
   }
 
 
@@ -508,23 +510,19 @@ function populateClientDropdowns() {
         option.value === currentFilterValue
     )
   ) {
-
-    filterCompany.value =
-      currentFilterValue;
-
+    filterCompany.value = currentFilterValue;
   }
 
 }
 
 
-// ── Client Modal ─────────────────────────────────────────────────────────────
+// ── Client Modal ──────────────────────────────────────────────────────
 
 document
   .getElementById("btn-open-client")
   .addEventListener("click", () => {
 
     reopenEarningModalAfterClient = false;
-
     openClientModal();
 
   });
@@ -595,6 +593,7 @@ function closeClientModal() {
   clientModal.classList.remove("show");
 
   fClientName.value = "";
+
 
   if (reopenEarningModalAfterClient) {
 
@@ -669,7 +668,6 @@ async function saveClient() {
 
 
     sortClients();
-
     populateClientDropdowns();
 
     fCompany.value = name;
@@ -706,7 +704,7 @@ async function saveClient() {
 }
 
 
-// ── Earning Modal ───────────────────────────────────────────────────────────
+// ── Earning Modal ────────────────────────────────────────────────────
 
 document
   .getElementById("btn-open-add")
@@ -774,7 +772,7 @@ function clearForm() {
 }
 
 
-// ── Save Earning ────────────────────────────────────────────────────────────
+// ── Save Earning ─────────────────────────────────────────────────────
 
 async function saveEarning() {
 
@@ -844,7 +842,6 @@ async function saveEarning() {
     closeModal();
 
     await loadEarnings();
-
     await loadClients();
 
   } catch (e) {
@@ -863,7 +860,7 @@ async function saveEarning() {
 }
 
 
-// ── Edit Earning ────────────────────────────────────────────────────────────
+// ── Edit Earning ─────────────────────────────────────────────────────
 
 function editEarning(id) {
 
@@ -896,33 +893,19 @@ function editEarning(id) {
     const option =
       document.createElement("option");
 
-    option.value =
-      entry.company;
+    option.value = entry.company;
+    option.textContent = entry.company;
 
-    option.textContent =
-      entry.company;
-
-    fCompany.appendChild(
-      option
-    );
+    fCompany.appendChild(option);
 
   }
 
 
-  fCompany.value =
-    entry.company;
-
-  fDate.value =
-    entry.date;
-
-  fAmount.value =
-    entry.amount;
-
-  fStatus.value =
-    entry.status;
-
-  fNotes.value =
-    entry.notes || "";
+  fCompany.value = entry.company;
+  fDate.value = entry.date;
+  fAmount.value = entry.amount;
+  fStatus.value = entry.status;
+  fNotes.value = entry.notes || "";
 
 
   modalTitle.textContent =
@@ -934,7 +917,7 @@ function editEarning(id) {
 }
 
 
-// ── Delete Earning ──────────────────────────────────────────────────────────
+// ── Delete Earning ───────────────────────────────────────────────────
 
 async function deleteEarning(id) {
 
@@ -971,7 +954,7 @@ async function deleteEarning(id) {
 }
 
 
-// ── Tabs ────────────────────────────────────────────────────────────────────
+// ── Tabs ──────────────────────────────────────────────────────────────
 
 document
   .querySelectorAll(".tab-btn")
@@ -1002,7 +985,7 @@ document
   });
 
 
-// ── Filters ─────────────────────────────────────────────────────────────────
+// ── Filters ───────────────────────────────────────────────────────────
 
 filterCompany.addEventListener(
   "change",
@@ -1028,7 +1011,7 @@ document
   });
 
 
-// ── Render ──────────────────────────────────────────────────────────────────
+// ── Render ────────────────────────────────────────────────────────────
 
 function render() {
 
@@ -1083,7 +1066,7 @@ function render() {
 }
 
 
-// ── Summary ─────────────────────────────────────────────────────────────────
+// ── Summary ───────────────────────────────────────────────────────────
 
 function updateSummaryBar(data) {
 
@@ -1150,7 +1133,7 @@ function updateSummaryBar(data) {
 }
 
 
-// ── All View ────────────────────────────────────────────────────────────────
+// ── All View ──────────────────────────────────────────────────────────
 
 function renderAll(data) {
 
@@ -1221,7 +1204,7 @@ function renderAll(data) {
 }
 
 
-// ── By Client ───────────────────────────────────────────────────────────────
+// ── By Client ─────────────────────────────────────────────────────────
 
 function renderByCompany(data) {
 
@@ -1319,7 +1302,7 @@ function renderByCompany(data) {
 }
 
 
-// ── By Month ────────────────────────────────────────────────────────────────
+// ── By Month ──────────────────────────────────────────────────────────
 
 function renderByMonth(data) {
 
@@ -1390,7 +1373,7 @@ function renderByMonth(data) {
 }
 
 
-// ── Build Group ─────────────────────────────────────────────────────────────
+// ── Build Group ───────────────────────────────────────────────────────
 
 function makeGroup(
   title,
@@ -1475,7 +1458,7 @@ function makeGroup(
 }
 
 
-// ── Entry Row ───────────────────────────────────────────────────────────────
+// ── Entry Row ─────────────────────────────────────────────────────────
 
 function makeEntryRow(entry) {
 
@@ -1567,7 +1550,7 @@ function makeEntryRow(entry) {
     "entry-actions";
 
 
-  // Edit button
+  // EDIT BUTTON
   const editButton =
     document.createElement("button");
 
@@ -1589,10 +1572,19 @@ function makeEntryRow(entry) {
   editButton.innerHTML = `
     <svg
       viewBox="0 0 24 24"
+      width="17"
+      height="17"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
       aria-hidden="true"
     >
       <path d="M12 20h9"/>
-      <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+      <path
+        d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"
+      />
     </svg>
   `;
 
@@ -1605,7 +1597,7 @@ function makeEntryRow(entry) {
   );
 
 
-  // Delete button
+  // DELETE BUTTON
   const deleteButton =
     document.createElement("button");
 
@@ -1627,13 +1619,20 @@ function makeEntryRow(entry) {
   deleteButton.innerHTML = `
     <svg
       viewBox="0 0 24 24"
+      width="17"
+      height="17"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
       aria-hidden="true"
     >
-      <path d="M3 6h18"/>
-      <path d="M8 6V4h8v2"/>
+      <polyline points="3 6 5 6 21 6"/>
       <path d="M19 6l-1 14H6L5 6"/>
-      <path d="M10 11v5"/>
-      <path d="M14 11v5"/>
+      <path d="M8 6V4h8v2"/>
+      <line x1="10" y1="11" x2="10" y2="17"/>
+      <line x1="14" y1="11" x2="14" y2="17"/>
     </svg>
   `;
 
@@ -1662,7 +1661,7 @@ function makeEntryRow(entry) {
 }
 
 
-// ── Empty State ─────────────────────────────────────────────────────────────
+// ── Empty State ───────────────────────────────────────────────────────
 
 function emptyState() {
 
@@ -1687,7 +1686,7 @@ function emptyState() {
 }
 
 
-// ── Helpers ─────────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────
 
 function fmt(number) {
 
@@ -1748,8 +1747,7 @@ function setSaveLoading(on) {
       ? "Saving..."
       : "Save";
 
-  btnSave.disabled =
-    on;
+  btnSave.disabled = on;
 
 }
 
