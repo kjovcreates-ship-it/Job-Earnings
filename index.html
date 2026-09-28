@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Earnings Tracker</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -28,7 +28,7 @@
       <input
         id="auth-pass"
         type="password"
-        placeholder="••••••••"
+        placeholder="Password"
         autocomplete="current-password"
       />
 
@@ -55,9 +55,7 @@
 
     <header>
 
-      <div class="header-logo">
-        EarningsTracker
-      </div>
+      <div class="header-logo">EarningsTracker</div>
 
       <div class="header-actions">
 
@@ -67,14 +65,9 @@
           type="button"
           title="Switch theme"
           aria-label="Switch theme"
-        >
-          ☀️
-        </button>
+        ></button>
 
-        <button
-          class="btn-logout"
-          id="btn-logout"
-        >
+        <button class="btn-logout" id="btn-logout">
           Log out
         </button>
 
@@ -85,14 +78,11 @@
 
     <main>
 
-      <!-- PAGE HEADING -->
       <div class="page-heading">
-
         <div>
           <h1>Earnings</h1>
           <p>Track payments from your clients.</p>
         </div>
-
       </div>
 
 
@@ -101,30 +91,22 @@
 
         <div class="sum-card">
           <div class="sum-label">Total Earnings</div>
-          <div class="sum-value accent" id="sum-total">
-            ₱0.00
-          </div>
+          <div class="sum-value accent" id="sum-total">₱0.00</div>
         </div>
 
         <div class="sum-card">
           <div class="sum-label">Paid</div>
-          <div class="sum-value green" id="sum-paid">
-            ₱0.00
-          </div>
+          <div class="sum-value green" id="sum-paid">₱0.00</div>
         </div>
 
         <div class="sum-card">
           <div class="sum-label">Pending</div>
-          <div class="sum-value orange" id="sum-pend">
-            ₱0.00
-          </div>
+          <div class="sum-value orange" id="sum-pend">₱0.00</div>
         </div>
 
         <div class="sum-card">
           <div class="sum-label">Entries</div>
-          <div class="sum-value" id="sum-count">
-            0
-          </div>
+          <div class="sum-value" id="sum-count">0</div>
         </div>
 
       </div>
@@ -137,31 +119,19 @@
           <option value="">All clients</option>
         </select>
 
-        <input
-          type="month"
-          id="filter-month"
-        />
+        <input type="month" id="filter-month" />
 
-        <button
-          class="btn-clear"
-          id="btn-clear-filter"
-        >
+        <button class="btn-clear" id="btn-clear-filter">
           Clear
         </button>
 
         <div class="control-spacer"></div>
 
-        <button
-          class="btn-client"
-          id="btn-open-client"
-        >
+        <button class="btn-client" id="btn-open-client">
           + Client
         </button>
 
-        <button
-          class="btn-add"
-          id="btn-open-add"
-        >
+        <button class="btn-add" id="btn-open-add">
           + Add Earning
         </button>
 
@@ -171,31 +141,21 @@
       <!-- TABS -->
       <div class="tabs">
 
-        <button
-          class="tab-btn active"
-          data-tab="all"
-        >
+        <button class="tab-btn active" data-tab="all">
           All
         </button>
 
-        <button
-          class="tab-btn"
-          data-tab="company"
-        >
+        <button class="tab-btn" data-tab="company">
           By Client
         </button>
 
-        <button
-          class="tab-btn"
-          data-tab="month"
-        >
+        <button class="tab-btn" data-tab="month">
           By Month
         </button>
 
       </div>
 
 
-      <!-- EARNINGS LIST -->
       <div id="earnings-list"></div>
 
     </main>
@@ -210,16 +170,18 @@
 
       <div class="modal-header">
 
-        <h2 id="modal-title">
-          Add Earning
-        </h2>
+        <h2 id="modal-title">Add Earning</h2>
 
         <button
           class="btn-close"
           id="btn-close-modal"
           type="button"
+          aria-label="Close"
         >
-          ✕
+          <svg viewBox="0 0 24 24">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+          </svg>
         </button>
 
       </div>
@@ -229,27 +191,17 @@
 
         <div class="field full">
 
-          <label for="f-company">
-            Client
-          </label>
+          <label for="f-company">Client</label>
 
           <select id="f-company">
-            <option value="">
-              Select a client
-            </option>
+            <option value="">Select a client</option>
           </select>
 
           <div class="client-helper">
-
             Don't see the client?
-
-            <button
-              type="button"
-              id="btn-add-client-from-earning"
-            >
+            <button type="button" id="btn-add-client-from-earning">
               Add new client
             </button>
-
           </div>
 
         </div>
@@ -257,9 +209,7 @@
 
         <div class="field">
 
-          <label for="f-date">
-            Date
-          </label>
+          <label for="f-date">Date</label>
 
           <input
             id="f-date"
@@ -271,9 +221,7 @@
 
         <div class="field">
 
-          <label for="f-amount">
-            Amount (₱)
-          </label>
+          <label for="f-amount">Amount (₱)</label>
 
           <input
             id="f-amount"
@@ -288,20 +236,11 @@
 
         <div class="field full">
 
-          <label for="f-status">
-            Payment Status
-          </label>
+          <label for="f-status">Payment Status</label>
 
           <select id="f-status">
-
-            <option value="paid">
-              Paid
-            </option>
-
-            <option value="pending">
-              Pending
-            </option>
-
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
           </select>
 
         </div>
@@ -309,14 +248,12 @@
 
         <div class="field full">
 
-          <label for="f-notes">
-            Notes (optional)
-          </label>
+          <label for="f-notes">Notes (optional)</label>
 
           <textarea
             id="f-notes"
             rows="3"
-            placeholder="e.g. Project name, invoice number…"
+            placeholder="e.g. Project name, invoice number"
           ></textarea>
 
         </div>
@@ -326,17 +263,11 @@
 
       <div class="modal-footer">
 
-        <button
-          class="btn-secondary"
-          id="btn-cancel-modal"
-        >
+        <button class="btn-secondary" id="btn-cancel-modal">
           Cancel
         </button>
 
-        <button
-          class="btn-primary"
-          id="btn-save"
-        >
+        <button class="btn-primary" id="btn-save">
           Save
         </button>
 
@@ -355,22 +286,22 @@
       <div class="modal-header">
 
         <div>
-
           <h2>Add Client</h2>
-
           <p class="modal-sub">
             Save a client so you can select them next time.
           </p>
-
         </div>
-
 
         <button
           class="btn-close"
           id="btn-close-client"
           type="button"
+          aria-label="Close"
         >
-          ✕
+          <svg viewBox="0 0 24 24">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+          </svg>
         </button>
 
       </div>
@@ -394,17 +325,11 @@
 
       <div class="modal-footer">
 
-        <button
-          class="btn-secondary"
-          id="btn-cancel-client"
-        >
+        <button class="btn-secondary" id="btn-cancel-client">
           Cancel
         </button>
 
-        <button
-          class="btn-primary"
-          id="btn-save-client"
-        >
+        <button class="btn-primary" id="btn-save-client">
           Add Client
         </button>
 
@@ -415,10 +340,7 @@
   </div>
 
 
-  <script
-    type="module"
-    src="app.js"
-  ></script>
+  <script type="module" src="app.js"></script>
 
 </body>
 </html>
