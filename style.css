@@ -1,4 +1,4 @@
-/* ── Theme ───────────────────────────────────────────────────────────── */
+/* ── THEME ─────────────────────────────────────────────────────────── */
 
 :root {
   --bg: #0f1117;
@@ -32,7 +32,7 @@
 }
 
 
-/* LIGHT MODE */
+/* ── LIGHT MODE ────────────────────────────────────────────────────── */
 
 body.light-mode {
   --bg: #f5f7fb;
@@ -56,7 +56,7 @@ body.light-mode {
 }
 
 
-/* ── Reset ───────────────────────────────────────────────────────────── */
+/* ── RESET ─────────────────────────────────────────────────────────── */
 
 * {
   box-sizing: border-box;
@@ -67,8 +67,10 @@ body.light-mode {
 
 body {
   font-family: var(--font);
+
   background: var(--bg);
   color: var(--text);
+
   min-height: 100vh;
 
   transition:
@@ -85,14 +87,16 @@ textarea {
 }
 
 
-/* ── Authentication ──────────────────────────────────────────────────── */
+/* ── AUTH ──────────────────────────────────────────────────────────── */
 
 #auth-screen {
   display: flex;
+
   align-items: center;
   justify-content: center;
 
   min-height: 100vh;
+
   padding: 24px;
 
   background:
@@ -111,7 +115,10 @@ textarea {
 
   background: var(--surface);
 
-  border: 1px solid var(--border);
+  border:
+    1px solid
+    var(--border);
+
   border-radius: 18px;
 
   padding: 42px 36px;
@@ -125,6 +132,7 @@ textarea {
 .auth-logo {
   font-size: 29px;
   font-weight: 800;
+
   letter-spacing: -0.7px;
 
   margin-bottom: 5px;
@@ -139,6 +147,7 @@ textarea {
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
   background-clip: text;
 }
 
@@ -155,12 +164,13 @@ textarea {
 .auth-card > label {
   display: block;
 
-  color: var(--muted);
-
   font-size: 11px;
   font-weight: 700;
 
+  color: var(--muted);
+
   text-transform: uppercase;
+
   letter-spacing: 0.6px;
 
   margin-bottom: 7px;
@@ -205,6 +215,7 @@ textarea {
 
 .remember-row {
   display: flex;
+
   align-items: center;
 
   margin-top: -3px;
@@ -214,6 +225,7 @@ textarea {
 
 .remember-label {
   display: inline-flex;
+
   align-items: center;
 
   gap: 8px;
@@ -249,11 +261,12 @@ textarea {
 
 .auth-btns {
   display: flex;
+
   gap: 10px;
 }
 
 
-/* ── Main Buttons ────────────────────────────────────────────────────── */
+/* ── BUTTONS ───────────────────────────────────────────────────────── */
 
 .btn-primary {
   flex: 1;
@@ -268,6 +281,7 @@ textarea {
   color: #fff;
 
   border: none;
+
   border-radius: var(--radius);
 
   padding: 11px 16px;
@@ -295,6 +309,7 @@ textarea {
 
 .btn-primary:disabled {
   opacity: 0.5;
+
   cursor: not-allowed;
 }
 
@@ -318,32 +333,28 @@ textarea {
   font-weight: 600;
 
   cursor: pointer;
-
-  transition:
-    background 0.2s,
-    border-color 0.2s;
 }
 
 
 .btn-secondary:hover {
   background: var(--surface3);
-  border-color: var(--border-light);
 }
 
 
-/* ── App ─────────────────────────────────────────────────────────────── */
+/* ── APP ───────────────────────────────────────────────────────────── */
 
 #app-screen {
   display: none;
 }
 
 
-/* ── Header ──────────────────────────────────────────────────────────── */
+/* ── HEADER ────────────────────────────────────────────────────────── */
 
 header {
   height: 60px;
 
   display: flex;
+
   align-items: center;
   justify-content: space-between;
 
@@ -356,6 +367,7 @@ header {
     var(--border);
 
   position: sticky;
+
   top: 0;
 
   z-index: 10;
@@ -366,8 +378,6 @@ header {
   font-size: 18px;
   font-weight: 800;
 
-  letter-spacing: -0.3px;
-
   background:
     linear-gradient(
       135deg,
@@ -377,25 +387,28 @@ header {
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
   background-clip: text;
 }
 
 
 .header-actions {
   display: flex;
+
   align-items: center;
 
   gap: 8px;
 }
 
 
-/* THEME BUTTON */
+/* ── THEME BUTTON ──────────────────────────────────────────────────── */
 
 .btn-theme {
-  width: 35px;
-  height: 35px;
+  width: 36px;
+  height: 36px;
 
   display: inline-flex;
+
   align-items: center;
   justify-content: center;
 
@@ -407,9 +420,11 @@ header {
 
   border-radius: 8px;
 
-  color: var(--muted);
+  color: var(--text);
 
   cursor: pointer;
+
+  padding: 0;
 
   transition:
     background 0.2s,
@@ -420,15 +435,14 @@ header {
 
 
 .btn-theme svg {
+  display: block;
+
   width: 18px;
   height: 18px;
 
-  fill: none;
-  stroke: currentColor;
+  color: currentColor;
 
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  flex-shrink: 0;
 }
 
 
@@ -437,7 +451,7 @@ header {
 
   border-color: var(--border-light);
 
-  color: var(--text);
+  color: var(--accent);
 }
 
 
@@ -446,7 +460,7 @@ header {
 }
 
 
-/* LOGOUT */
+/* ── LOGOUT ────────────────────────────────────────────────────────── */
 
 .btn-logout {
   background: transparent;
@@ -464,20 +478,17 @@ header {
   font-size: 13px;
 
   cursor: pointer;
-
-  transition:
-    border-color 0.2s,
-    color 0.2s;
 }
 
 
 .btn-logout:hover {
   border-color: var(--red);
+
   color: var(--red);
 }
 
 
-/* ── Main Content ────────────────────────────────────────────────────── */
+/* ── MAIN ──────────────────────────────────────────────────────────── */
 
 main {
   max-width: 960px;
@@ -509,7 +520,7 @@ main {
 }
 
 
-/* ── Summary ─────────────────────────────────────────────────────────── */
+/* ── SUMMARY ───────────────────────────────────────────────────────── */
 
 .summary-bar {
   display: grid;
@@ -548,14 +559,14 @@ main {
 
 
 .sum-label {
-  color: var(--muted);
-
   font-size: 10px;
   font-weight: 700;
 
   text-transform: uppercase;
 
   letter-spacing: 0.7px;
+
+  color: var(--muted);
 
   margin-bottom: 7px;
 }
@@ -564,8 +575,6 @@ main {
 .sum-value {
   font-size: 21px;
   font-weight: 750;
-
-  letter-spacing: -0.4px;
 
   font-variant-numeric:
     tabular-nums;
@@ -587,17 +596,18 @@ main {
 }
 
 
-/* ── Controls ────────────────────────────────────────────────────────── */
+/* ── CONTROLS ──────────────────────────────────────────────────────── */
 
 .controls {
   display: flex;
-  align-items: center;
 
   gap: 9px;
 
   margin-bottom: 18px;
 
   flex-wrap: nowrap;
+
+  align-items: center;
 }
 
 
@@ -620,10 +630,6 @@ main {
   font-size: 13px;
 
   outline: none;
-
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
 }
 
 
@@ -635,15 +641,12 @@ main {
 .controls input:focus,
 .controls select:focus {
   border-color: var(--accent);
-
-  box-shadow:
-    0 0 0 3px
-    rgba(79, 142, 247, 0.08);
 }
 
 
 .control-spacer {
   flex: 1 1 auto;
+
   min-width: 20px;
 }
 
@@ -669,28 +672,26 @@ main {
   cursor: pointer;
 
   flex-shrink: 0;
-
-  transition:
-    background 0.2s,
-    border-color 0.2s,
-    color 0.2s;
 }
 
 
 .btn-client {
   color: var(--text);
+
   font-weight: 600;
 }
 
 
 .btn-clear:hover {
   color: var(--text);
+
   border-color: var(--text);
 }
 
 
 .btn-client:hover {
   background: var(--surface2);
+
   border-color: var(--accent);
 }
 
@@ -719,10 +720,6 @@ main {
   cursor: pointer;
 
   flex-shrink: 0;
-
-  transition:
-    opacity 0.2s,
-    transform 0.15s;
 }
 
 
@@ -731,12 +728,7 @@ main {
 }
 
 
-.btn-add:active {
-  transform: translateY(1px);
-}
-
-
-/* ── Tabs ────────────────────────────────────────────────────────────── */
+/* ── TABS ──────────────────────────────────────────────────────────── */
 
 .tabs {
   display: inline-flex;
@@ -772,10 +764,6 @@ main {
   font-weight: 600;
 
   cursor: pointer;
-
-  transition:
-    background 0.2s,
-    color 0.2s;
 }
 
 
@@ -791,7 +779,7 @@ main {
 }
 
 
-/* ── Groups ──────────────────────────────────────────────────────────── */
+/* ── GROUPS ────────────────────────────────────────────────────────── */
 
 .group-section {
   background: var(--surface);
@@ -810,6 +798,7 @@ main {
 
 .group-header {
   display: flex;
+
   align-items: center;
 
   padding: 14px 16px;
@@ -824,6 +813,7 @@ main {
 
 .group-header-text {
   display: flex;
+
   flex-direction: column;
 
   gap: 3px;
@@ -832,22 +822,25 @@ main {
 
 .group-title {
   font-size: 15px;
+
   font-weight: 700;
 }
 
 
 .group-sub {
-  color: var(--muted);
-
   font-size: 11px;
+
+  color: var(--muted);
 }
 
 
-/* ── Earnings Rows ───────────────────────────────────────────────────── */
+/* ── ENTRY ROWS ────────────────────────────────────────────────────── */
 
 .entry-row {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   padding: 13px 16px;
@@ -873,6 +866,7 @@ main {
 
 .entry-left {
   display: flex;
+
   flex-direction: column;
 
   gap: 3px;
@@ -885,6 +879,7 @@ main {
 
 .entry-right {
   display: flex;
+
   align-items: center;
 
   gap: 12px;
@@ -895,21 +890,22 @@ main {
 
 .entry-company {
   font-size: 14px;
+
   font-weight: 650;
 }
 
 
 .entry-date {
-  color: var(--muted);
-
   font-size: 11px;
+
+  color: var(--muted);
 }
 
 
 .entry-notes {
-  color: var(--muted);
-
   font-size: 12px;
+
+  color: var(--muted);
 
   white-space: nowrap;
 
@@ -923,6 +919,7 @@ main {
 
 .entry-amount {
   font-size: 15px;
+
   font-weight: 750;
 
   font-variant-numeric:
@@ -930,10 +927,11 @@ main {
 }
 
 
-/* ── Badges ──────────────────────────────────────────────────────────── */
+/* ── BADGES ────────────────────────────────────────────────────────── */
 
 .badge {
   font-size: 10px;
+
   font-weight: 800;
 
   padding: 4px 8px;
@@ -951,10 +949,6 @@ main {
     rgba(46, 204, 113, 0.12);
 
   color: var(--green);
-
-  border:
-    1px solid
-    rgba(46, 204, 113, 0.18);
 }
 
 
@@ -963,14 +957,10 @@ main {
     rgba(243, 156, 18, 0.12);
 
   color: var(--orange);
-
-  border:
-    1px solid
-    rgba(243, 156, 18, 0.18);
 }
 
 
-/* ── Entry Actions ───────────────────────────────────────────────────── */
+/* ── ENTRY ACTION ICONS ────────────────────────────────────────────── */
 
 .entry-actions {
   display: flex;
@@ -990,10 +980,11 @@ main {
 
 
 .btn-icon {
-  width: 30px;
-  height: 30px;
+  width: 31px;
+  height: 31px;
 
   display: inline-flex;
+
   align-items: center;
   justify-content: center;
 
@@ -1016,20 +1007,14 @@ main {
 
 
 .btn-icon svg {
-  width: 16px;
-  height: 16px;
-
   display: block;
 
-  fill: none;
+  width: 17px;
+  height: 17px;
 
-  stroke: currentColor;
+  color: currentColor;
 
-  stroke-width: 2;
-
-  stroke-linecap: round;
-
-  stroke-linejoin: round;
+  flex-shrink: 0;
 }
 
 
@@ -1045,7 +1030,7 @@ main {
 }
 
 
-/* ── Empty State ─────────────────────────────────────────────────────── */
+/* ── EMPTY STATE ───────────────────────────────────────────────────── */
 
 .empty-state {
   text-align: center;
@@ -1072,6 +1057,7 @@ main {
     0 auto 12px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -1104,7 +1090,7 @@ main {
 }
 
 
-/* ── Modal ───────────────────────────────────────────────────────────── */
+/* ── MODALS ────────────────────────────────────────────────────────── */
 
 #modal,
 #client-modal {
@@ -1136,9 +1122,6 @@ main {
 
 
 .modal-card {
-  width: 100%;
-  max-width: 480px;
-
   background: var(--surface);
 
   border:
@@ -1148,6 +1131,10 @@ main {
   border-radius: 17px;
 
   padding: 29px 27px;
+
+  width: 100%;
+
+  max-width: 480px;
 
   box-shadow:
     0 30px 80px
@@ -1175,6 +1162,7 @@ main {
 
 .modal-header h2 {
   font-size: 18px;
+
   font-weight: 750;
 }
 
@@ -1188,13 +1176,14 @@ main {
 }
 
 
-/* CLOSE ICON */
+/* ── CLOSE ICON ────────────────────────────────────────────────────── */
 
 .btn-close {
-  width: 30px;
-  height: 30px;
+  width: 31px;
+  height: 31px;
 
   display: inline-flex;
+
   align-items: center;
   justify-content: center;
 
@@ -1208,25 +1197,19 @@ main {
 
   cursor: pointer;
 
-  transition:
-    background 0.15s,
-    color 0.15s;
+  padding: 0;
+
+  flex-shrink: 0;
 }
 
 
 .btn-close svg {
+  display: block;
+
   width: 18px;
   height: 18px;
 
-  fill: none;
-
-  stroke: currentColor;
-
-  stroke-width: 2;
-
-  stroke-linecap: round;
-
-  stroke-linejoin: round;
+  color: currentColor;
 }
 
 
@@ -1237,7 +1220,7 @@ main {
 }
 
 
-/* ── Forms ───────────────────────────────────────────────────────────── */
+/* ── FORMS ─────────────────────────────────────────────────────────── */
 
 .form-grid {
   display: grid;
@@ -1257,14 +1240,15 @@ main {
 .field label {
   display: block;
 
-  color: var(--muted);
-
   font-size: 10px;
+
   font-weight: 750;
 
   text-transform: uppercase;
 
   letter-spacing: 0.6px;
+
+  color: var(--muted);
 
   margin-bottom: 7px;
 }
@@ -1292,10 +1276,6 @@ main {
   outline: none;
 
   resize: none;
-
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
 }
 
 
@@ -1359,7 +1339,7 @@ main {
 }
 
 
-/* ── Light Mode Adjustments ──────────────────────────────────────────── */
+/* ── LIGHT MODE ADJUSTMENTS ───────────────────────────────────────── */
 
 body.light-mode #auth-screen {
   background:
@@ -1387,7 +1367,7 @@ body.light-mode .modal-card {
 }
 
 
-/* ── Touch Devices ───────────────────────────────────────────────────── */
+/* ── TOUCH DEVICES ─────────────────────────────────────────────────── */
 
 @media (hover: none) {
 
@@ -1398,7 +1378,7 @@ body.light-mode .modal-card {
 }
 
 
-/* ── Tablet ──────────────────────────────────────────────────────────── */
+/* ── TABLET ────────────────────────────────────────────────────────── */
 
 @media (max-width: 700px) {
 
@@ -1431,7 +1411,7 @@ body.light-mode .modal-card {
 }
 
 
-/* ── Mobile ──────────────────────────────────────────────────────────── */
+/* ── MOBILE ────────────────────────────────────────────────────────── */
 
 @media (max-width: 600px) {
 
@@ -1524,7 +1504,7 @@ body.light-mode .modal-card {
 }
 
 
-/* ── Small Mobile ────────────────────────────────────────────────────── */
+/* ── SMALL MOBILE ──────────────────────────────────────────────────── */
 
 @media (max-width: 420px) {
 
