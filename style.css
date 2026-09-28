@@ -1,7 +1,6 @@
-/* ── Theme Tokens ─────────────────────────────────────────────────────── */
+/* ── Theme ───────────────────────────────────────────────────────────── */
 
 :root {
-
   --bg: #0f1117;
 
   --surface: #181c27;
@@ -24,20 +23,18 @@
   --radius: 10px;
 
   --font:
-    'Inter',
+    Inter,
     system-ui,
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-
 }
 
 
-/* ── Light Theme ─────────────────────────────────────────────────────── */
+/* LIGHT MODE */
 
 body.light-mode {
-
   --bg: #f5f7fb;
 
   --surface: #ffffff;
@@ -56,7 +53,6 @@ body.light-mode {
 
   --text: #1c2333;
   --muted: #687386;
-
 }
 
 
@@ -70,23 +66,14 @@ body.light-mode {
 
 
 body {
-
-  font-family:
-    var(--font);
-
-  background:
-    var(--bg);
-
-  color:
-    var(--text);
-
-  min-height:
-    100vh;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
 
   transition:
     background-color 0.2s,
     color 0.2s;
-
 }
 
 
@@ -94,25 +81,18 @@ button,
 input,
 select,
 textarea {
-
-  font-family:
-    var(--font);
-
+  font-family: var(--font);
 }
 
 
 /* ── Authentication ──────────────────────────────────────────────────── */
 
 #auth-screen {
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 
   min-height: 100vh;
-
   padding: 24px;
 
   background:
@@ -122,51 +102,32 @@ textarea {
       transparent 35%
     ),
     var(--bg);
-
 }
 
 
 .auth-card {
+  width: 100%;
+  max-width: 400px;
 
-  background:
-    var(--surface);
+  background: var(--surface);
 
-  border:
-    1px solid
-    var(--border);
+  border: 1px solid var(--border);
+  border-radius: 18px;
 
-  border-radius:
-    18px;
-
-  padding:
-    42px 36px;
-
-  width:
-    100%;
-
-  max-width:
-    400px;
+  padding: 42px 36px;
 
   box-shadow:
     0 24px 60px
     rgba(0, 0, 0, 0.18);
-
 }
 
 
 .auth-logo {
+  font-size: 29px;
+  font-weight: 800;
+  letter-spacing: -0.7px;
 
-  font-size:
-    29px;
-
-  font-weight:
-    800;
-
-  letter-spacing:
-    -0.7px;
-
-  margin-bottom:
-    5px;
+  margin-bottom: 5px;
 
   background:
     linear-gradient(
@@ -176,198 +137,126 @@ textarea {
       var(--accent2)
     );
 
-  -webkit-background-clip:
-    text;
-
-  -webkit-text-fill-color:
-    transparent;
-
-  background-clip:
-    text;
-
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 
 .auth-sub {
+  color: var(--muted);
 
-  color:
-    var(--muted);
+  font-size: 14px;
 
-  font-size:
-    14px;
-
-  margin-bottom:
-    30px;
-
+  margin-bottom: 30px;
 }
 
 
 .auth-card > label {
+  display: block;
 
-  display:
-    block;
+  color: var(--muted);
 
-  font-size:
-    11px;
+  font-size: 11px;
+  font-weight: 700;
 
-  font-weight:
-    700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
 
-  color:
-    var(--muted);
-
-  text-transform:
-    uppercase;
-
-  letter-spacing:
-    0.6px;
-
-  margin-bottom:
-    7px;
-
+  margin-bottom: 7px;
 }
 
 
 .auth-card > input {
+  width: 100%;
 
-  width:
-    100%;
-
-  background:
-    var(--surface2);
+  background: var(--surface2);
 
   border:
     1px solid
     var(--border);
 
-  border-radius:
-    var(--radius);
+  border-radius: var(--radius);
 
-  color:
-    var(--text);
+  color: var(--text);
 
-  padding:
-    11px 14px;
+  padding: 11px 14px;
 
-  font-size:
-    14px;
+  font-size: 14px;
 
-  outline:
-    none;
+  outline: none;
 
-  margin-bottom:
-    17px;
+  margin-bottom: 17px;
 
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
-
 }
 
 
 .auth-card > input:focus {
-
-  border-color:
-    var(--accent);
+  border-color: var(--accent);
 
   box-shadow:
     0 0 0 3px
     rgba(79, 142, 247, 0.1);
-
 }
 
 
 .remember-row {
+  display: flex;
+  align-items: center;
 
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  margin-top:
-    -3px;
-
-  margin-bottom:
-    12px;
-
+  margin-top: -3px;
+  margin-bottom: 12px;
 }
 
 
 .remember-label {
+  display: inline-flex;
+  align-items: center;
 
-  display:
-    inline-flex;
+  gap: 8px;
 
-  align-items:
-    center;
+  color: var(--muted);
 
-  gap:
-    8px;
+  font-size: 13px;
 
-  color:
-    var(--muted);
-
-  font-size:
-    13px;
-
-  cursor:
-    pointer;
-
+  cursor: pointer;
 }
 
 
 .remember-label input {
+  width: 15px;
+  height: 15px;
 
-  width:
-    15px;
+  accent-color: var(--accent);
 
-  height:
-    15px;
-
-  accent-color:
-    var(--accent);
-
-  cursor:
-    pointer;
-
+  cursor: pointer;
 }
 
 
 .auth-error {
+  color: var(--red);
 
-  color:
-    var(--red);
+  font-size: 13px;
 
-  font-size:
-    13px;
+  min-height: 18px;
 
-  min-height:
-    18px;
-
-  margin-bottom:
-    13px;
-
+  margin-bottom: 13px;
 }
 
 
 .auth-btns {
-
-  display:
-    flex;
-
-  gap:
-    10px;
-
+  display: flex;
+  gap: 10px;
 }
 
 
 /* ── Main Buttons ────────────────────────────────────────────────────── */
 
 .btn-primary {
-
-  flex:
-    1;
+  flex: 1;
 
   background:
     linear-gradient(
@@ -376,157 +265,108 @@ textarea {
       var(--accent2)
     );
 
-  color:
-    #ffffff;
+  color: #fff;
 
-  border:
-    none;
+  border: none;
+  border-radius: var(--radius);
 
-  border-radius:
-    var(--radius);
+  padding: 11px 16px;
 
-  padding:
-    11px 16px;
+  font-size: 14px;
+  font-weight: 700;
 
-  font-size:
-    14px;
-
-  font-weight:
-    700;
-
-  cursor:
-    pointer;
+  cursor: pointer;
 
   transition:
     opacity 0.2s,
     transform 0.15s;
-
 }
 
 
 .btn-primary:hover {
-
-  opacity:
-    0.9;
-
+  opacity: 0.9;
 }
 
 
 .btn-primary:active {
-
-  transform:
-    translateY(1px);
-
+  transform: translateY(1px);
 }
 
 
 .btn-primary:disabled {
-
-  opacity:
-    0.5;
-
-  cursor:
-    not-allowed;
-
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 
 .btn-secondary {
+  flex: 1;
 
-  flex:
-    1;
+  background: var(--surface2);
 
-  background:
-    var(--surface2);
-
-  color:
-    var(--text);
+  color: var(--text);
 
   border:
     1px solid
     var(--border);
 
-  border-radius:
-    var(--radius);
+  border-radius: var(--radius);
 
-  padding:
-    11px 16px;
+  padding: 11px 16px;
 
-  font-size:
-    14px;
+  font-size: 14px;
+  font-weight: 600;
 
-  font-weight:
-    600;
+  cursor: pointer;
 
-  cursor:
-    pointer;
-
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 
 
 .btn-secondary:hover {
-
-  background:
-    var(--surface3);
-
+  background: var(--surface3);
+  border-color: var(--border-light);
 }
 
 
 /* ── App ─────────────────────────────────────────────────────────────── */
 
 #app-screen {
-
-  display:
-    none;
-
+  display: none;
 }
 
 
 /* ── Header ──────────────────────────────────────────────────────────── */
 
 header {
+  height: 60px;
 
-  background:
-    var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 24px;
+
+  background: var(--surface);
 
   border-bottom:
     1px solid
     var(--border);
 
-  padding:
-    0 24px;
+  position: sticky;
+  top: 0;
 
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  height:
-    60px;
-
-  position:
-    sticky;
-
-  top:
-    0;
-
-  z-index:
-    10;
-
+  z-index: 10;
 }
 
 
 .header-logo {
+  font-size: 18px;
+  font-weight: 800;
 
-  font-size:
-    18px;
-
-  font-weight:
-    800;
+  letter-spacing: -0.3px;
 
   background:
     linear-gradient(
@@ -535,442 +375,327 @@ header {
       var(--accent2)
     );
 
-  -webkit-background-clip:
-    text;
-
-  -webkit-text-fill-color:
-    transparent;
-
-  background-clip:
-    text;
-
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 
 .header-actions {
+  display: flex;
+  align-items: center;
 
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    8px;
-
+  gap: 8px;
 }
 
 
+/* THEME BUTTON */
+
 .btn-theme {
+  width: 35px;
+  height: 35px;
 
-  width:
-    35px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  height:
-    35px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  background:
-    var(--surface2);
+  background: var(--surface2);
 
   border:
     1px solid
     var(--border);
 
-  border-radius:
-    8px;
+  border-radius: 8px;
 
-  font-size:
-    15px;
+  color: var(--muted);
 
-  cursor:
-    pointer;
+  cursor: pointer;
 
   transition:
     background 0.2s,
     border-color 0.2s,
+    color 0.2s,
     transform 0.15s;
+}
 
+
+.btn-theme svg {
+  width: 18px;
+  height: 18px;
+
+  fill: none;
+  stroke: currentColor;
+
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 
 .btn-theme:hover {
+  background: var(--surface3);
 
-  background:
-    var(--surface3);
+  border-color: var(--border-light);
 
-  border-color:
-    var(--border-light);
-
+  color: var(--text);
 }
 
 
 .btn-theme:active {
-
-  transform:
-    scale(0.95);
-
+  transform: scale(0.95);
 }
 
 
-.btn-logout {
+/* LOGOUT */
 
-  background:
-    transparent;
+.btn-logout {
+  background: transparent;
 
   border:
     1px solid
     var(--border);
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
-  padding:
-    8px 14px;
+  padding: 8px 14px;
 
-  border-radius:
-    8px;
+  border-radius: 8px;
 
-  font-size:
-    13px;
+  font-size: 13px;
 
-  cursor:
-    pointer;
+  cursor: pointer;
 
+  transition:
+    border-color 0.2s,
+    color 0.2s;
 }
 
 
 .btn-logout:hover {
-
-  border-color:
-    var(--red);
-
-  color:
-    var(--red);
-
+  border-color: var(--red);
+  color: var(--red);
 }
 
 
 /* ── Main Content ────────────────────────────────────────────────────── */
 
 main {
+  max-width: 960px;
 
-  max-width:
-    960px;
+  margin: 0 auto;
 
-  margin:
-    0 auto;
-
-  padding:
-    32px 20px 80px;
-
+  padding: 32px 20px 80px;
 }
 
 
 .page-heading {
-
-  margin-bottom:
-    22px;
-
+  margin-bottom: 22px;
 }
 
 
 .page-heading h1 {
+  font-size: 25px;
 
-  font-size:
-    25px;
+  letter-spacing: -0.6px;
 
-  letter-spacing:
-    -0.6px;
-
-  margin-bottom:
-    4px;
-
+  margin-bottom: 4px;
 }
 
 
 .page-heading p {
+  color: var(--muted);
 
-  color:
-    var(--muted);
-
-  font-size:
-    13px;
-
+  font-size: 13px;
 }
 
 
 /* ── Summary ─────────────────────────────────────────────────────────── */
 
 .summary-bar {
-
-  display:
-    grid;
+  display: grid;
 
   grid-template-columns:
     repeat(4, 1fr);
 
-  gap:
-    12px;
+  gap: 12px;
 
-  margin-bottom:
-    25px;
-
+  margin-bottom: 25px;
 }
 
 
 .sum-card {
-
-  background:
-    var(--surface);
+  background: var(--surface);
 
   border:
     1px solid
     var(--border);
 
-  border-radius:
-    12px;
+  border-radius: 12px;
 
-  padding:
-    17px 18px;
+  padding: 17px 18px;
 
   transition:
     transform 0.2s,
     border-color 0.2s;
-
 }
 
 
 .sum-card:hover {
+  transform: translateY(-1px);
 
-  transform:
-    translateY(-1px);
-
-  border-color:
-    var(--border-light);
-
+  border-color: var(--border-light);
 }
 
 
 .sum-label {
+  color: var(--muted);
 
-  font-size:
-    10px;
+  font-size: 10px;
+  font-weight: 700;
 
-  font-weight:
-    700;
+  text-transform: uppercase;
 
-  text-transform:
-    uppercase;
+  letter-spacing: 0.7px;
 
-  letter-spacing:
-    0.7px;
-
-  color:
-    var(--muted);
-
-  margin-bottom:
-    7px;
-
+  margin-bottom: 7px;
 }
 
 
 .sum-value {
+  font-size: 21px;
+  font-weight: 750;
 
-  font-size:
-    21px;
-
-  font-weight:
-    750;
+  letter-spacing: -0.4px;
 
   font-variant-numeric:
     tabular-nums;
-
 }
 
 
 .sum-value.accent {
-
-  color:
-    var(--accent);
-
+  color: var(--accent);
 }
 
 
 .sum-value.green {
-
-  color:
-    var(--green);
-
+  color: var(--green);
 }
 
 
 .sum-value.orange {
-
-  color:
-    var(--orange);
-
+  color: var(--orange);
 }
 
 
 /* ── Controls ────────────────────────────────────────────────────────── */
 
 .controls {
+  display: flex;
+  align-items: center;
 
-  display:
-    flex;
+  gap: 9px;
 
-  gap:
-    9px;
+  margin-bottom: 18px;
 
-  margin-bottom:
-    18px;
-
-  flex-wrap:
-    nowrap;
-
-  align-items:
-    center;
-
+  flex-wrap: nowrap;
 }
 
 
 .controls input,
 .controls select {
-
-  background:
-    var(--surface);
+  background: var(--surface);
 
   border:
     1px solid
     var(--border);
 
-  border-radius:
-    8px;
+  border-radius: 8px;
 
-  color:
-    var(--text);
+  color: var(--text);
 
-  padding:
-    9px 12px;
+  padding: 9px 12px;
 
-  min-height:
-    37px;
+  min-height: 37px;
 
-  font-size:
-    13px;
+  font-size: 13px;
 
-  outline:
-    none;
+  outline: none;
 
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 
 .controls select {
-
-  min-width:
-    170px;
-
+  min-width: 170px;
 }
 
 
 .controls input:focus,
 .controls select:focus {
+  border-color: var(--accent);
 
-  border-color:
-    var(--accent);
-
+  box-shadow:
+    0 0 0 3px
+    rgba(79, 142, 247, 0.08);
 }
 
 
 .control-spacer {
-
-  flex:
-    1 1 auto;
-
-  min-width:
-    20px;
-
+  flex: 1 1 auto;
+  min-width: 20px;
 }
 
 
 .btn-clear,
 .btn-client {
-
-  background:
-    var(--surface);
+  background: var(--surface);
 
   border:
     1px solid
     var(--border);
 
-  color:
-    var(--muted);
+  color: var(--muted);
 
-  border-radius:
-    8px;
+  border-radius: 8px;
 
-  padding:
-    9px 13px;
+  padding: 9px 13px;
 
-  min-height:
-    37px;
+  min-height: 37px;
 
-  font-size:
-    13px;
+  font-size: 13px;
 
-  cursor:
-    pointer;
+  cursor: pointer;
 
-  flex-shrink:
-    0;
+  flex-shrink: 0;
 
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
 }
 
 
 .btn-client {
-
-  color:
-    var(--text);
-
-  font-weight:
-    600;
-
+  color: var(--text);
+  font-weight: 600;
 }
 
 
 .btn-clear:hover {
-
-  color:
-    var(--text);
-
-  border-color:
-    var(--text);
-
+  color: var(--text);
+  border-color: var(--text);
 }
 
 
 .btn-client:hover {
-
-  background:
-    var(--surface2);
-
-  border-color:
-    var(--accent);
-
+  background: var(--surface2);
+  border-color: var(--accent);
 }
 
 
 .btn-add {
-
   background:
     linear-gradient(
       135deg,
@@ -978,216 +703,154 @@ main {
       var(--accent2)
     );
 
-  color:
-    #ffffff;
+  color: #fff;
 
-  border:
-    none;
+  border: none;
 
-  border-radius:
-    8px;
+  border-radius: 8px;
 
-  padding:
-    9px 17px;
+  padding: 9px 17px;
 
-  min-height:
-    37px;
+  min-height: 37px;
 
-  font-size:
-    13px;
+  font-size: 13px;
+  font-weight: 700;
 
-  font-weight:
-    700;
+  cursor: pointer;
 
-  cursor:
-    pointer;
+  flex-shrink: 0;
 
-  flex-shrink:
-    0;
-
+  transition:
+    opacity 0.2s,
+    transform 0.15s;
 }
 
 
 .btn-add:hover {
+  opacity: 0.9;
+}
 
-  opacity:
-    0.9;
 
+.btn-add:active {
+  transform: translateY(1px);
 }
 
 
 /* ── Tabs ────────────────────────────────────────────────────────────── */
 
 .tabs {
+  display: inline-flex;
 
-  display:
-    inline-flex;
+  gap: 3px;
 
-  gap:
-    3px;
+  padding: 3px;
 
-  padding:
-    3px;
+  margin-bottom: 20px;
 
-  margin-bottom:
-    20px;
-
-  background:
-    var(--surface);
+  background: var(--surface);
 
   border:
     1px solid
     var(--border);
 
-  border-radius:
-    10px;
-
+  border-radius: 10px;
 }
 
 
 .tab-btn {
+  padding: 7px 16px;
 
-  padding:
-    7px 16px;
+  border-radius: 7px;
 
-  border-radius:
-    7px;
+  border: none;
 
-  border:
-    none;
+  background: transparent;
 
-  background:
-    transparent;
+  color: var(--muted);
 
-  color:
-    var(--muted);
+  font-size: 13px;
+  font-weight: 600;
 
-  font-size:
-    13px;
+  cursor: pointer;
 
-  font-weight:
-    600;
-
-  cursor:
-    pointer;
-
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 
 
 .tab-btn.active {
+  background: var(--surface2);
 
-  background:
-    var(--surface2);
-
-  color:
-    var(--text);
-
+  color: var(--text);
 }
 
 
 .tab-btn:hover:not(.active) {
-
-  color:
-    var(--text);
-
+  color: var(--text);
 }
 
 
-/* ── Earnings Groups ─────────────────────────────────────────────────── */
+/* ── Groups ──────────────────────────────────────────────────────────── */
 
 .group-section {
-
-  background:
-    var(--surface);
+  background: var(--surface);
 
   border:
     1px solid
     var(--border);
 
-  border-radius:
-    12px;
+  border-radius: 12px;
 
-  margin-bottom:
-    14px;
+  margin-bottom: 14px;
 
-  overflow:
-    hidden;
-
+  overflow: hidden;
 }
 
 
 .group-header {
+  display: flex;
+  align-items: center;
 
-  display:
-    flex;
+  padding: 14px 16px;
 
-  align-items:
-    center;
-
-  padding:
-    14px 16px;
-
-  background:
-    var(--surface2);
+  background: var(--surface2);
 
   border-bottom:
     1px solid
     var(--border);
-
 }
 
 
 .group-header-text {
+  display: flex;
+  flex-direction: column;
 
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  gap:
-    3px;
-
+  gap: 3px;
 }
 
 
 .group-title {
-
-  font-size:
-    15px;
-
-  font-weight:
-    700;
-
+  font-size: 15px;
+  font-weight: 700;
 }
 
 
 .group-sub {
+  color: var(--muted);
 
-  font-size:
-    11px;
-
-  color:
-    var(--muted);
-
+  font-size: 11px;
 }
 
 
 /* ── Earnings Rows ───────────────────────────────────────────────────── */
 
 .entry-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  padding:
-    13px 16px;
+  padding: 13px 16px;
 
   border-bottom:
     1px solid
@@ -1195,331 +858,261 @@ main {
 
   transition:
     background 0.15s;
-
 }
 
 
 .entry-row:last-child {
-
-  border-bottom:
-    none;
-
+  border-bottom: none;
 }
 
 
 .entry-row:hover {
-
-  background:
-    var(--surface2);
-
+  background: var(--surface2);
 }
 
 
 .entry-left {
+  display: flex;
+  flex-direction: column;
 
-  display:
-    flex;
+  gap: 3px;
 
-  flex-direction:
-    column;
+  flex: 1;
 
-  gap:
-    3px;
-
-  flex:
-    1;
-
-  min-width:
-    0;
-
+  min-width: 0;
 }
 
 
 .entry-right {
+  display: flex;
+  align-items: center;
 
-  display:
-    flex;
+  gap: 12px;
 
-  align-items:
-    center;
-
-  gap:
-    12px;
-
-  flex-shrink:
-    0;
-
+  flex-shrink: 0;
 }
 
 
 .entry-company {
-
-  font-size:
-    14px;
-
-  font-weight:
-    650;
-
+  font-size: 14px;
+  font-weight: 650;
 }
 
 
 .entry-date {
+  color: var(--muted);
 
-  font-size:
-    11px;
-
-  color:
-    var(--muted);
-
+  font-size: 11px;
 }
 
 
 .entry-notes {
+  color: var(--muted);
 
-  font-size:
-    12px;
+  font-size: 12px;
 
-  color:
-    var(--muted);
+  white-space: nowrap;
 
-  white-space:
-    nowrap;
+  overflow: hidden;
 
-  overflow:
-    hidden;
+  text-overflow: ellipsis;
 
-  text-overflow:
-    ellipsis;
-
-  max-width:
-    350px;
-
+  max-width: 350px;
 }
 
 
 .entry-amount {
-
-  font-size:
-    15px;
-
-  font-weight:
-    750;
+  font-size: 15px;
+  font-weight: 750;
 
   font-variant-numeric:
     tabular-nums;
-
 }
 
 
-/* ── Status Badges ───────────────────────────────────────────────────── */
+/* ── Badges ──────────────────────────────────────────────────────────── */
 
 .badge {
+  font-size: 10px;
+  font-weight: 800;
 
-  font-size:
-    10px;
+  padding: 4px 8px;
 
-  font-weight:
-    800;
+  border-radius: 100px;
 
-  padding:
-    4px 8px;
+  text-transform: uppercase;
 
-  border-radius:
-    100px;
-
-  text-transform:
-    uppercase;
-
-  letter-spacing:
-    0.4px;
-
+  letter-spacing: 0.4px;
 }
 
 
 .badge.paid {
-
   background:
     rgba(46, 204, 113, 0.12);
 
-  color:
-    var(--green);
+  color: var(--green);
 
+  border:
+    1px solid
+    rgba(46, 204, 113, 0.18);
 }
 
 
 .badge.pending {
-
   background:
     rgba(243, 156, 18, 0.12);
 
-  color:
-    var(--orange);
+  color: var(--orange);
 
+  border:
+    1px solid
+    rgba(243, 156, 18, 0.18);
 }
 
 
 /* ── Entry Actions ───────────────────────────────────────────────────── */
 
 .entry-actions {
+  display: flex;
 
-  display:
-    flex;
+  gap: 3px;
 
-  gap:
-    3px;
-
-  opacity:
-    0;
+  opacity: 0;
 
   transition:
     opacity 0.15s;
-
 }
 
 
-.entry-row:hover
-.entry-actions {
-
-  opacity:
-    1;
-
+.entry-row:hover .entry-actions {
+  opacity: 1;
 }
 
 
 .btn-icon {
+  width: 30px;
+  height: 30px;
 
-  background:
-    transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  border:
-    none;
+  background: transparent;
 
-  cursor:
-    pointer;
+  border: none;
 
-  font-size:
-    14px;
+  color: var(--muted);
 
-  padding:
-    5px;
+  cursor: pointer;
 
-  border-radius:
-    6px;
+  padding: 0;
 
+  border-radius: 7px;
+
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+
+.btn-icon svg {
+  width: 16px;
+  height: 16px;
+
+  display: block;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 2;
+
+  stroke-linecap: round;
+
+  stroke-linejoin: round;
 }
 
 
 .btn-icon:hover {
+  background: var(--surface3);
 
-  background:
-    var(--surface3);
+  color: var(--text);
+}
 
+
+.btn-icon-delete:hover {
+  color: var(--red);
 }
 
 
 /* ── Empty State ─────────────────────────────────────────────────────── */
 
 .empty-state {
+  text-align: center;
 
-  text-align:
-    center;
+  color: var(--muted);
 
-  color:
-    var(--muted);
+  padding: 65px 20px;
 
-  padding:
-    65px 20px;
-
-  font-size:
-    14px;
+  font-size: 14px;
 
   border:
     1px dashed
     var(--border);
 
-  border-radius:
-    12px;
-
+  border-radius: 12px;
 }
 
 
 .empty-icon {
-
-  width:
-    42px;
-
-  height:
-    42px;
+  width: 42px;
+  height: 42px;
 
   margin:
     0 auto 12px;
 
-  display:
-    flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  align-items:
-    center;
+  border-radius: 50%;
 
-  justify-content:
-    center;
-
-  border-radius:
-    50%;
-
-  background:
-    var(--surface);
+  background: var(--surface);
 
   border:
     1px solid
     var(--border);
 
-  color:
-    var(--accent);
+  color: var(--accent);
 
-  font-size:
-    18px;
-
-  font-weight:
-    800;
-
+  font-size: 18px;
+  font-weight: 800;
 }
 
 
 .empty-title {
+  color: var(--text);
 
-  color:
-    var(--text);
+  font-weight: 700;
 
-  font-weight:
-    700;
-
-  margin-bottom:
-    5px;
-
+  margin-bottom: 5px;
 }
 
 
 .empty-text {
-
-  font-size:
-    12px;
-
+  font-size: 12px;
 }
 
 
-/* ── Modals ──────────────────────────────────────────────────────────── */
+/* ── Modal ───────────────────────────────────────────────────────────── */
 
 #modal,
 #client-modal {
+  display: none;
 
-  display:
-    none;
+  position: fixed;
 
-  position:
-    fixed;
-
-  inset:
-    0;
+  inset: 0;
 
   background:
     rgba(5, 7, 12, 0.72);
@@ -1527,314 +1120,248 @@ main {
   backdrop-filter:
     blur(6px);
 
-  align-items:
-    center;
+  align-items: center;
+  justify-content: center;
 
-  justify-content:
-    center;
+  z-index: 100;
 
-  z-index:
-    100;
-
-  padding:
-    20px;
-
+  padding: 20px;
 }
 
 
 #modal.show,
 #client-modal.show {
-
-  display:
-    flex;
-
+  display: flex;
 }
 
 
 .modal-card {
+  width: 100%;
+  max-width: 480px;
 
-  background:
-    var(--surface);
+  background: var(--surface);
 
   border:
     1px solid
     var(--border-light);
 
-  border-radius:
-    17px;
+  border-radius: 17px;
 
-  padding:
-    29px 27px;
-
-  width:
-    100%;
-
-  max-width:
-    480px;
+  padding: 29px 27px;
 
   box-shadow:
     0 30px 80px
     rgba(0, 0, 0, 0.28);
-
 }
 
 
 .client-modal-card {
-
-  max-width:
-    430px;
-
+  max-width: 430px;
 }
 
 
 .modal-header {
+  display: flex;
 
-  display:
-    flex;
+  justify-content: space-between;
 
-  justify-content:
-    space-between;
+  align-items: flex-start;
 
-  align-items:
-    flex-start;
+  gap: 15px;
 
-  gap:
-    15px;
-
-  margin-bottom:
-    24px;
-
+  margin-bottom: 24px;
 }
 
 
 .modal-header h2 {
-
-  font-size:
-    18px;
-
-  font-weight:
-    750;
-
+  font-size: 18px;
+  font-weight: 750;
 }
 
 
 .modal-sub {
+  color: var(--muted);
 
-  color:
-    var(--muted);
+  font-size: 12px;
 
-  font-size:
-    12px;
-
-  margin-top:
-    4px;
-
+  margin-top: 4px;
 }
 
 
+/* CLOSE ICON */
+
 .btn-close {
+  width: 30px;
+  height: 30px;
 
-  background:
-    transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  border:
-    none;
+  background: transparent;
 
-  color:
-    var(--muted);
+  border: none;
 
-  font-size:
-    18px;
+  border-radius: 7px;
 
-  cursor:
-    pointer;
+  color: var(--muted);
 
+  cursor: pointer;
+
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+
+.btn-close svg {
+  width: 18px;
+  height: 18px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 2;
+
+  stroke-linecap: round;
+
+  stroke-linejoin: round;
 }
 
 
 .btn-close:hover {
+  background: var(--surface2);
 
-  color:
-    var(--text);
-
+  color: var(--text);
 }
 
 
-/* ── Form ────────────────────────────────────────────────────────────── */
+/* ── Forms ───────────────────────────────────────────────────────────── */
 
 .form-grid {
-
-  display:
-    grid;
+  display: grid;
 
   grid-template-columns:
     1fr 1fr;
 
-  gap:
-    14px;
-
+  gap: 14px;
 }
 
 
 .form-grid .full {
-
-  grid-column:
-    1 / -1;
-
+  grid-column: 1 / -1;
 }
 
 
 .field label {
+  display: block;
 
-  display:
-    block;
+  color: var(--muted);
 
-  font-size:
-    10px;
+  font-size: 10px;
+  font-weight: 750;
 
-  font-weight:
-    750;
+  text-transform: uppercase;
 
-  text-transform:
-    uppercase;
+  letter-spacing: 0.6px;
 
-  letter-spacing:
-    0.6px;
-
-  color:
-    var(--muted);
-
-  margin-bottom:
-    7px;
-
+  margin-bottom: 7px;
 }
 
 
 .field input,
 .field select,
 .field textarea {
+  width: 100%;
 
-  width:
-    100%;
-
-  background:
-    var(--surface2);
+  background: var(--surface2);
 
   border:
     1px solid
     var(--border);
 
-  border-radius:
-    8px;
+  border-radius: 8px;
 
-  color:
-    var(--text);
+  color: var(--text);
 
-  padding:
-    10px 12px;
+  padding: 10px 12px;
 
-  font-size:
-    14px;
+  font-size: 14px;
 
-  outline:
-    none;
+  outline: none;
 
-  resize:
-    none;
+  resize: none;
 
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
+  border-color: var(--accent);
 
-  border-color:
-    var(--accent);
-
+  box-shadow:
+    0 0 0 3px
+    rgba(79, 142, 247, 0.08);
 }
 
 
 .field select option {
+  background: var(--surface2);
 
-  background:
-    var(--surface2);
-
-  color:
-    var(--text);
-
+  color: var(--text);
 }
 
 
 .client-helper {
+  color: var(--muted);
 
-  color:
-    var(--muted);
+  font-size: 11px;
 
-  font-size:
-    11px;
-
-  margin-top:
-    7px;
-
+  margin-top: 7px;
 }
 
 
 .client-helper button {
+  border: none;
 
-  border:
-    none;
+  background: transparent;
 
-  background:
-    transparent;
+  color: var(--accent);
 
-  color:
-    var(--accent);
+  font-size: 11px;
 
-  font-size:
-    11px;
+  cursor: pointer;
 
-  cursor:
-    pointer;
+  padding: 0;
 
-  padding:
-    0;
-
-  margin-left:
-    3px;
-
+  margin-left: 3px;
 }
 
 
 .client-helper button:hover {
-
-  text-decoration:
-    underline;
-
+  text-decoration: underline;
 }
 
 
 .modal-footer {
+  display: flex;
 
-  display:
-    flex;
+  gap: 10px;
 
-  gap:
-    10px;
+  margin-top: 24px;
 
-  margin-top:
-    24px;
-
-  justify-content:
-    flex-end;
-
+  justify-content: flex-end;
 }
 
 
-/* ── Light Mode Specific Tweaks ──────────────────────────────────────── */
+/* ── Light Mode Adjustments ──────────────────────────────────────────── */
 
 body.light-mode #auth-screen {
-
   background:
     radial-gradient(
       circle at top,
@@ -1842,26 +1369,21 @@ body.light-mode #auth-screen {
       transparent 35%
     ),
     var(--bg);
-
 }
 
 
 body.light-mode #modal,
 body.light-mode #client-modal {
-
   background:
     rgba(25, 35, 50, 0.35);
-
 }
 
 
 body.light-mode .auth-card,
 body.light-mode .modal-card {
-
   box-shadow:
     0 25px 60px
     rgba(30, 45, 70, 0.12);
-
 }
 
 
@@ -1870,10 +1392,7 @@ body.light-mode .modal-card {
 @media (hover: none) {
 
   .entry-actions {
-
-    opacity:
-      1;
-
+    opacity: 1;
   }
 
 }
@@ -1884,43 +1403,29 @@ body.light-mode .modal-card {
 @media (max-width: 700px) {
 
   main {
-
-    padding:
-      25px 15px 70px;
-
+    padding: 25px 15px 70px;
   }
 
 
   .summary-bar {
-
     grid-template-columns:
       1fr 1fr;
-
   }
 
 
   .controls {
-
-    flex-wrap:
-      wrap;
-
+    flex-wrap: wrap;
   }
 
 
   .control-spacer {
-
-    display:
-      none;
-
+    display: none;
   }
 
 
   .controls select,
   .controls input {
-
-    flex:
-      1;
-
+    flex: 1;
   }
 
 }
@@ -1931,56 +1436,36 @@ body.light-mode .modal-card {
 @media (max-width: 600px) {
 
   header {
-
-    padding:
-      0 16px;
-
+    padding: 0 16px;
   }
 
 
   .page-heading h1 {
-
-    font-size:
-      22px;
-
+    font-size: 22px;
   }
 
 
   .summary-bar {
-
-    gap:
-      9px;
-
+    gap: 9px;
   }
 
 
   .sum-card {
-
-    padding:
-      14px;
-
+    padding: 14px;
   }
 
 
   .sum-value {
-
-    font-size:
-      18px;
-
+    font-size: 18px;
   }
 
 
   .controls {
+    flex-direction: column;
 
-    flex-direction:
-      column;
+    flex-wrap: nowrap;
 
-    flex-wrap:
-      nowrap;
-
-    align-items:
-      stretch;
-
+    align-items: stretch;
   }
 
 
@@ -1989,80 +1474,51 @@ body.light-mode .modal-card {
   .btn-clear,
   .btn-client,
   .btn-add {
-
-    width:
-      100%;
-
+    width: 100%;
   }
 
 
   .tabs {
+    display: flex;
 
-    display:
-      flex;
-
-    width:
-      100%;
-
+    width: 100%;
   }
 
 
   .tab-btn {
+    flex: 1;
 
-    flex:
-      1;
-
-    padding:
-      8px;
-
+    padding: 8px;
   }
 
 
   .form-grid {
-
-    grid-template-columns:
-      1fr;
-
+    grid-template-columns: 1fr;
   }
 
 
   .entry-actions {
-
-    opacity:
-      1;
-
+    opacity: 1;
   }
 
 
   .entry-row {
-
-    padding:
-      12px 13px;
-
+    padding: 12px 13px;
   }
 
 
   .entry-right {
-
-    gap:
-      7px;
-
+    gap: 7px;
   }
 
 
   .entry-notes {
-
-    max-width:
-      180px;
-
+    max-width: 180px;
   }
 
 
   .modal-card {
-
-    padding:
-      24px 20px;
-
+    padding: 24px 20px;
   }
 
 }
@@ -2073,32 +1529,21 @@ body.light-mode .modal-card {
 @media (max-width: 420px) {
 
   .entry-right {
+    flex-wrap: wrap;
 
-    flex-wrap:
-      wrap;
-
-    justify-content:
-      flex-end;
-
+    justify-content: flex-end;
   }
 
 
   .entry-amount {
+    width: 100%;
 
-    width:
-      100%;
-
-    text-align:
-      right;
-
+    text-align: right;
   }
 
 
   .auth-card {
-
-    padding:
-      34px 25px;
-
+    padding: 34px 25px;
   }
 
 }
