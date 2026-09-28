@@ -1,5 +1,9 @@
 // ── Firebase Imports ────────────────────────────────────────────────────────
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
 
 import {
   getAuth,
@@ -9,8 +13,9 @@ import {
   onAuthStateChanged,
   setPersistence,
   browserLocalPersistence,
-  browserSessionPersistence,
+  browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
 
 import {
   getFirestore,
@@ -22,121 +27,273 @@ import {
   updateDoc,
   query,
   where,
-  orderBy,
+  orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 
 // ── Firebase Config ─────────────────────────────────────────────────────────
+
 const firebaseConfig = {
-  apiKey:            "AIzaSyByrrAl0TtCdinZkuCqoDjRx97niRQWv5Q",
-  authDomain:        "job-earnings-4871a.firebaseapp.com",
-  projectId:         "job-earnings-4871a",
-  storageBucket:     "job-earnings-4871a.firebasestorage.app",
-  messagingSenderId: "459548048021",
-  appId:             "1:459548048021:web:7339d69059438cde40399c",
+
+  apiKey:
+    "AIzaSyByrrAl0TtCdinZkuCqoDjRx97niRQWv5Q",
+
+  authDomain:
+    "job-earnings-4871a.firebaseapp.com",
+
+  projectId:
+    "job-earnings-4871a",
+
+  storageBucket:
+    "job-earnings-4871a.firebasestorage.app",
+
+  messagingSenderId:
+    "459548048021",
+
+  appId:
+    "1:459548048021:web:7339d69059438cde40399c"
+
 };
 
 
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
+
 const db = getFirestore(app);
 
 
 // ── State ───────────────────────────────────────────────────────────────────
+
 let currentUser = null;
+
 let allEarnings = [];
+
 let allClients = [];
 
 let editingId = null;
+
 let activeTab = "all";
 
 let reopenEarningModalAfterClient = false;
 
 
 // ── DOM References ──────────────────────────────────────────────────────────
-const authScreen = document.getElementById("auth-screen");
-const appScreen = document.getElementById("app-screen");
 
-const authEmail = document.getElementById("auth-email");
-const authPass = document.getElementById("auth-pass");
-const authError = document.getElementById("auth-error");
-const rememberMe = document.getElementById("remember-me");
+const authScreen =
+  document.getElementById("auth-screen");
 
-const modal = document.getElementById("modal");
-const clientModal = document.getElementById("client-modal");
-
-const modalTitle = document.getElementById("modal-title");
-const earningsList = document.getElementById("earnings-list");
-
-const filterCompany = document.getElementById("filter-company");
-const filterMonth = document.getElementById("filter-month");
-
-const fCompany = document.getElementById("f-company");
-const fDate = document.getElementById("f-date");
-const fAmount = document.getElementById("f-amount");
-const fStatus = document.getElementById("f-status");
-const fNotes = document.getElementById("f-notes");
-
-const fClientName = document.getElementById("f-client-name");
-
-const btnSave = document.getElementById("btn-save");
-const btnSaveClient = document.getElementById("btn-save-client");
+const appScreen =
+  document.getElementById("app-screen");
 
 
-// ── Auth State Listener ─────────────────────────────────────────────────────
-onAuthStateChanged(auth, async (user) => {
+const authEmail =
+  document.getElementById("auth-email");
 
-  currentUser = user;
+const authPass =
+  document.getElementById("auth-pass");
 
-  if (user) {
+const authError =
+  document.getElementById("auth-error");
 
-    showApp();
+const rememberMe =
+  document.getElementById("remember-me");
 
-    await loadEarnings();
-    await loadClients();
 
-  } else {
+const modal =
+  document.getElementById("modal");
 
-    allEarnings = [];
-    allClients = [];
+const clientModal =
+  document.getElementById("client-modal");
 
-    showAuth();
 
-  }
+const modalTitle =
+  document.getElementById("modal-title");
+
+const earningsList =
+  document.getElementById("earnings-list");
+
+
+const filterCompany =
+  document.getElementById("filter-company");
+
+const filterMonth =
+  document.getElementById("filter-month");
+
+
+const fCompany =
+  document.getElementById("f-company");
+
+const fDate =
+  document.getElementById("f-date");
+
+const fAmount =
+  document.getElementById("f-amount");
+
+const fStatus =
+  document.getElementById("f-status");
+
+const fNotes =
+  document.getElementById("f-notes");
+
+
+const fClientName =
+  document.getElementById("f-client-name");
+
+
+const btnSave =
+  document.getElementById("btn-save");
+
+const btnSaveClient =
+  document.getElementById("btn-save-client");
+
+const btnTheme =
+  document.getElementById("btn-theme");
+
+
+// ── Theme ───────────────────────────────────────────────────────────────────
+
+const savedTheme =
+  localStorage.getItem("theme");
+
+
+if (savedTheme === "light") {
+
+  document.body.classList.add("light-mode");
+
+}
+
+
+updateThemeButton();
+
+
+btnTheme.addEventListener("click", () => {
+
+  document.body.classList.toggle(
+    "light-mode"
+  );
+
+
+  const isLight =
+    document.body.classList.contains(
+      "light-mode"
+    );
+
+
+  localStorage.setItem(
+    "theme",
+    isLight ? "light" : "dark"
+  );
+
+
+  updateThemeButton();
 
 });
+
+
+function updateThemeButton() {
+
+  const isLight =
+    document.body.classList.contains(
+      "light-mode"
+    );
+
+
+  btnTheme.textContent =
+    isLight ? "🌙" : "☀️";
+
+
+  btnTheme.title =
+    isLight
+      ? "Switch to dark mode"
+      : "Switch to light mode";
+
+}
+
+
+// ── Auth State ──────────────────────────────────────────────────────────────
+
+onAuthStateChanged(
+  auth,
+  async (user) => {
+
+    currentUser = user;
+
+
+    if (user) {
+
+      showApp();
+
+      await loadEarnings();
+
+      await loadClients();
+
+    } else {
+
+      allEarnings = [];
+
+      allClients = [];
+
+      showAuth();
+
+    }
+
+  }
+);
 
 
 // ── Authentication ──────────────────────────────────────────────────────────
+
 document
   .getElementById("btn-login")
-  .addEventListener("click", handleLogin);
+  .addEventListener(
+    "click",
+    handleLogin
+  );
+
 
 document
   .getElementById("btn-register")
-  .addEventListener("click", handleRegister);
+  .addEventListener(
+    "click",
+    handleRegister
+  );
+
 
 document
   .getElementById("btn-logout")
-  .addEventListener("click", handleLogout);
+  .addEventListener(
+    "click",
+    handleLogout
+  );
 
 
-authPass.addEventListener("keydown", (e) => {
+authPass.addEventListener(
+  "keydown",
+  (e) => {
 
-  if (e.key === "Enter") {
-    handleLogin();
+    if (e.key === "Enter") {
+
+      handleLogin();
+
+    }
+
   }
-
-});
+);
 
 
 async function setChosenPersistence() {
 
-  const persistence = rememberMe.checked
-    ? browserLocalPersistence
-    : browserSessionPersistence;
+  const persistence =
+    rememberMe.checked
+      ? browserLocalPersistence
+      : browserSessionPersistence;
 
-  await setPersistence(auth, persistence);
+
+  await setPersistence(
+    auth,
+    persistence
+  );
 
 }
 
@@ -145,9 +302,11 @@ async function handleLogin() {
 
   setAuthError("");
 
+
   try {
 
     await setChosenPersistence();
+
 
     await signInWithEmailAndPassword(
       auth,
@@ -157,7 +316,9 @@ async function handleLogin() {
 
   } catch (e) {
 
-    setAuthError(friendlyError(e.code));
+    setAuthError(
+      friendlyError(e.code)
+    );
 
   }
 
@@ -168,9 +329,11 @@ async function handleRegister() {
 
   setAuthError("");
 
+
   try {
 
     await setChosenPersistence();
+
 
     await createUserWithEmailAndPassword(
       auth,
@@ -180,7 +343,9 @@ async function handleRegister() {
 
   } catch (e) {
 
-    setAuthError(friendlyError(e.code));
+    setAuthError(
+      friendlyError(e.code)
+    );
 
   }
 
@@ -195,34 +360,69 @@ async function handleLogout() {
 
 
 // ── Load Earnings ───────────────────────────────────────────────────────────
+
 async function loadEarnings() {
 
   if (!currentUser) return;
 
+
   try {
 
     const q = query(
-      collection(db, "earnings"),
-      where("uid", "==", currentUser.uid),
-      orderBy("date", "desc")
+
+      collection(
+        db,
+        "earnings"
+      ),
+
+      where(
+        "uid",
+        "==",
+        currentUser.uid
+      ),
+
+      orderBy(
+        "date",
+        "desc"
+      )
+
     );
 
-    const snap = await getDocs(q);
 
-    allEarnings = snap.docs.map((d) => ({
-      id: d.id,
-      ...d.data()
-    }));
+    const snap =
+      await getDocs(q);
+
+
+    allEarnings =
+      snap.docs.map(
+        (d) => ({
+          id: d.id,
+          ...d.data()
+        })
+      );
+
 
     render();
 
   } catch (e) {
 
-    console.error("Error loading earnings:", e);
+    console.error(
+      "Error loading earnings:",
+      e
+    );
+
 
     earningsList.innerHTML = `
       <div class="empty-state">
-        Could not load earnings. Please refresh and try again.
+
+        <div class="empty-title">
+          Could not load earnings
+        </div>
+
+        <div class="empty-text">
+          Please refresh and try again.
+        </div>
+
       </div>
     `;
 
@@ -232,41 +432,68 @@ async function loadEarnings() {
 
 
 // ── Load Clients ────────────────────────────────────────────────────────────
+
 async function loadClients() {
 
   if (!currentUser) return;
 
+
   try {
 
     const q = query(
-      collection(db, "clients"),
-      where("uid", "==", currentUser.uid)
+
+      collection(
+        db,
+        "clients"
+      ),
+
+      where(
+        "uid",
+        "==",
+        currentUser.uid
+      )
+
     );
 
-    const snap = await getDocs(q);
 
-    allClients = snap.docs.map((d) => ({
-      id: d.id,
-      ...d.data()
-    }));
+    const snap =
+      await getDocs(q);
 
-    // Add existing company names from your old earnings to the dropdown.
-    // This does NOT modify or delete any old earning.
+
+    allClients =
+      snap.docs.map(
+        (d) => ({
+          id: d.id,
+          ...d.data()
+        })
+      );
+
+
     mergeExistingEarningCompanies();
 
     sortClients();
+
     populateClientDropdowns();
 
   } catch (e) {
 
-    console.error("Error loading clients:", e);
+    console.error(
+      "Error loading clients:",
+      e
+    );
 
-    // Even if the clients collection fails,
-    // your old earnings can still populate the dropdown.
+
+    /*
+      If the clients collection isn't available yet,
+      old company names still remain usable.
+    */
+
     allClients = [];
 
     mergeExistingEarningCompanies();
+
     sortClients();
+
     populateClientDropdowns();
 
   }
@@ -274,181 +501,308 @@ async function loadClients() {
 }
 
 
-// ── Existing Companies Compatibility ────────────────────────────────────────
+// ── Existing Earnings Compatibility ────────────────────────────────────────
+
 function mergeExistingEarningCompanies() {
 
-  const existingNames = new Set(
-    allClients.map((client) =>
-      client.name.toLowerCase()
-    )
-  );
+  const existingNames =
+    new Set(
+      allClients.map(
+        (client) =>
+          client.name.toLowerCase()
+      )
+    );
 
 
-  allEarnings.forEach((earning) => {
+  allEarnings.forEach(
+    (earning) => {
 
-    const name = String(earning.company || "").trim();
+      const name =
+        String(
+          earning.company || ""
+        ).trim();
 
-    if (!name) return;
+
+      if (!name) return;
 
 
-    if (!existingNames.has(name.toLowerCase())) {
+      if (
+        !existingNames.has(
+          name.toLowerCase()
+        )
+      ) {
 
-      allClients.push({
-        id: null,
-        name,
-        uid: currentUser.uid,
-        legacy: true
-      });
+        allClients.push({
 
-      existingNames.add(name.toLowerCase());
+          id: null,
+
+          name,
+
+          uid: currentUser.uid,
+
+          legacy: true
+
+        });
+
+
+        existingNames.add(
+          name.toLowerCase()
+        );
+
+      }
 
     }
-
-  });
+  );
 
 }
 
 
 function sortClients() {
 
-  allClients.sort((a, b) =>
-    a.name.localeCompare(b.name)
+  allClients.sort(
+    (a, b) =>
+      a.name.localeCompare(
+        b.name
+      )
   );
 
 }
 
 
+// ── Client Dropdowns ────────────────────────────────────────────────────────
+
 function populateClientDropdowns() {
 
-  const currentFormValue = fCompany.value;
-  const currentFilterValue = filterCompany.value;
+  const currentFormValue =
+    fCompany.value;
+
+  const currentFilterValue =
+    filterCompany.value;
 
 
   fCompany.innerHTML = `
-    <option value="">Select a client</option>
+    <option value="">
+      Select a client
+    </option>
   `;
+
 
   filterCompany.innerHTML = `
-    <option value="">All clients</option>
+    <option value="">
+      All clients
+    </option>
   `;
 
 
-  allClients.forEach((client) => {
+  allClients.forEach(
+    (client) => {
 
-    const option = document.createElement("option");
-
-    option.value = client.name;
-    option.textContent = client.name;
-
-    fCompany.appendChild(option);
+      const formOption =
+        document.createElement(
+          "option"
+        );
 
 
-    const filterOption = document.createElement("option");
+      formOption.value =
+        client.name;
 
-    filterOption.value = client.name;
-    filterOption.textContent = client.name;
+      formOption.textContent =
+        client.name;
 
-    filterCompany.appendChild(filterOption);
 
-  });
+      fCompany.appendChild(
+        formOption
+      );
+
+
+      const filterOption =
+        document.createElement(
+          "option"
+        );
+
+
+      filterOption.value =
+        client.name;
+
+      filterOption.textContent =
+        client.name;
+
+
+      filterCompany.appendChild(
+        filterOption
+      );
+
+    }
+  );
 
 
   if (
     [...fCompany.options].some(
-      (option) => option.value === currentFormValue
+      (option) =>
+        option.value ===
+        currentFormValue
     )
   ) {
-    fCompany.value = currentFormValue;
+
+    fCompany.value =
+      currentFormValue;
+
   }
 
 
   if (
     [...filterCompany.options].some(
-      (option) => option.value === currentFilterValue
+      (option) =>
+        option.value ===
+        currentFilterValue
     )
   ) {
-    filterCompany.value = currentFilterValue;
+
+    filterCompany.value =
+      currentFilterValue;
+
   }
 
 }
 
 
 // ── Client Modal ─────────────────────────────────────────────────────────────
-document
-  .getElementById("btn-open-client")
-  .addEventListener("click", () => {
-    reopenEarningModalAfterClient = false;
-    openClientModal();
-  });
-
 
 document
-  .getElementById("btn-add-client-from-earning")
-  .addEventListener("click", () => {
+  .getElementById(
+    "btn-open-client"
+  )
+  .addEventListener(
+    "click",
+    () => {
 
-    reopenEarningModalAfterClient = true;
+      reopenEarningModalAfterClient =
+        false;
 
-    modal.classList.remove("show");
+      openClientModal();
 
-    openClientModal();
-
-  });
+    }
+  );
 
 
 document
-  .getElementById("btn-close-client")
-  .addEventListener("click", closeClientModal);
+  .getElementById(
+    "btn-add-client-from-earning"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      reopenEarningModalAfterClient =
+        true;
+
+      modal.classList.remove(
+        "show"
+      );
+
+      openClientModal();
+
+    }
+  );
+
 
 document
-  .getElementById("btn-cancel-client")
-  .addEventListener("click", closeClientModal);
+  .getElementById(
+    "btn-close-client"
+  )
+  .addEventListener(
+    "click",
+    closeClientModal
+  );
 
-btnSaveClient.addEventListener("click", saveClient);
+
+document
+  .getElementById(
+    "btn-cancel-client"
+  )
+  .addEventListener(
+    "click",
+    closeClientModal
+  );
 
 
-clientModal.addEventListener("click", (e) => {
+btnSaveClient.addEventListener(
+  "click",
+  saveClient
+);
 
-  if (e.target === clientModal) {
-    closeClientModal();
+
+clientModal.addEventListener(
+  "click",
+  (e) => {
+
+    if (
+      e.target === clientModal
+    ) {
+
+      closeClientModal();
+
+    }
+
   }
+);
 
-});
 
+fClientName.addEventListener(
+  "keydown",
+  (e) => {
 
-fClientName.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
 
-  if (e.key === "Enter") {
-    saveClient();
+      saveClient();
+
+    }
+
   }
-
-});
+);
 
 
 function openClientModal() {
 
   fClientName.value = "";
 
-  clientModal.classList.add("show");
+  clientModal.classList.add(
+    "show"
+  );
 
-  setTimeout(() => {
-    fClientName.focus();
-  }, 50);
+
+  setTimeout(
+    () => {
+
+      fClientName.focus();
+
+    },
+    50
+  );
 
 }
 
 
 function closeClientModal() {
 
-  clientModal.classList.remove("show");
+  clientModal.classList.remove(
+    "show"
+  );
+
 
   fClientName.value = "";
 
 
-  if (reopenEarningModalAfterClient) {
+  if (
+    reopenEarningModalAfterClient
+  ) {
 
-    reopenEarningModalAfterClient = false;
+    reopenEarningModalAfterClient =
+      false;
 
-    modal.classList.add("show");
+    modal.classList.add(
+      "show"
+    );
 
   }
 
@@ -457,27 +811,34 @@ function closeClientModal() {
 
 async function saveClient() {
 
-  const name = fClientName.value.trim();
+  const name =
+    fClientName.value.trim();
 
 
   if (!name) {
 
-    alert("Enter a client or company name.");
+    alert(
+      "Enter a client or company name."
+    );
 
     return;
 
   }
 
 
-  const duplicate = allClients.some(
-    (client) =>
-      client.name.toLowerCase() === name.toLowerCase()
-  );
+  const duplicate =
+    allClients.some(
+      (client) =>
+        client.name.toLowerCase() ===
+        name.toLowerCase()
+    );
 
 
   if (duplicate) {
 
-    alert("That client already exists.");
+    alert(
+      "That client already exists."
+    );
 
     return;
 
@@ -485,58 +846,90 @@ async function saveClient() {
 
 
   btnSaveClient.disabled = true;
-  btnSaveClient.textContent = "Adding…";
+
+  btnSaveClient.textContent =
+    "Adding…";
 
 
   try {
 
     const data = {
-      uid: currentUser.uid,
+
+      uid:
+        currentUser.uid,
+
       name
+
     };
 
 
-    const docRef = await addDoc(
-      collection(db, "clients"),
-      data
-    );
+    const docRef =
+      await addDoc(
+
+        collection(
+          db,
+          "clients"
+        ),
+
+        data
+
+      );
 
 
     allClients.push({
-      id: docRef.id,
+
+      id:
+        docRef.id,
+
       ...data
+
     });
 
 
     sortClients();
+
     populateClientDropdowns();
 
 
-    // Automatically select newly created client.
-    fCompany.value = name;
+    fCompany.value =
+      name;
 
 
-    clientModal.classList.remove("show");
+    clientModal.classList.remove(
+      "show"
+    );
+
+
     fClientName.value = "";
 
 
-    if (reopenEarningModalAfterClient) {
+    if (
+      reopenEarningModalAfterClient
+    ) {
 
-      reopenEarningModalAfterClient = false;
+      reopenEarningModalAfterClient =
+        false;
 
-      modal.classList.add("show");
+      modal.classList.add(
+        "show"
+      );
 
     }
 
-
   } catch (e) {
 
-    alert("Error adding client: " + e.message);
+    alert(
+      "Error adding client: " +
+      e.message
+    );
 
   } finally {
 
-    btnSaveClient.disabled = false;
-    btnSaveClient.textContent = "Add Client";
+    btnSaveClient.disabled =
+      false;
+
+    btnSaveClient.textContent =
+      "Add Client";
 
   }
 
@@ -544,28 +937,55 @@ async function saveClient() {
 
 
 // ── Earning Modal ───────────────────────────────────────────────────────────
-document
-  .getElementById("btn-open-add")
-  .addEventListener("click", openAddModal);
 
 document
-  .getElementById("btn-close-modal")
-  .addEventListener("click", closeModal);
+  .getElementById(
+    "btn-open-add"
+  )
+  .addEventListener(
+    "click",
+    openAddModal
+  );
+
 
 document
-  .getElementById("btn-cancel-modal")
-  .addEventListener("click", closeModal);
+  .getElementById(
+    "btn-close-modal"
+  )
+  .addEventListener(
+    "click",
+    closeModal
+  );
 
-btnSave.addEventListener("click", saveEarning);
+
+document
+  .getElementById(
+    "btn-cancel-modal"
+  )
+  .addEventListener(
+    "click",
+    closeModal
+  );
 
 
-modal.addEventListener("click", (e) => {
+btnSave.addEventListener(
+  "click",
+  saveEarning
+);
 
-  if (e.target === modal) {
-    closeModal();
+
+modal.addEventListener(
+  "click",
+  (e) => {
+
+    if (e.target === modal) {
+
+      closeModal();
+
+    }
+
   }
-
-});
+);
 
 
 function openAddModal() {
@@ -574,16 +994,21 @@ function openAddModal() {
 
   clearForm();
 
-  modalTitle.textContent = "Add Earning";
+  modalTitle.textContent =
+    "Add Earning";
 
-  modal.classList.add("show");
+  modal.classList.add(
+    "show"
+  );
 
 }
 
 
 function closeModal() {
 
-  modal.classList.remove("show");
+  modal.classList.remove(
+    "show"
+  );
 
   editingId = null;
 
@@ -595,30 +1020,43 @@ function closeModal() {
 function clearForm() {
 
   fCompany.value = "";
+
   fDate.value = "";
+
   fAmount.value = "";
+
   fStatus.value = "paid";
+
   fNotes.value = "";
 
 }
 
 
 // ── Save Earning ────────────────────────────────────────────────────────────
+
 async function saveEarning() {
 
   const data = {
 
-    uid: currentUser.uid,
+    uid:
+      currentUser.uid,
 
-    company: fCompany.value,
+    company:
+      fCompany.value,
 
-    date: fDate.value,
+    date:
+      fDate.value,
 
-    amount: parseFloat(fAmount.value) || 0,
+    amount:
+      parseFloat(
+        fAmount.value
+      ) || 0,
 
-    status: fStatus.value,
+    status:
+      fStatus.value,
 
-    notes: fNotes.value.trim()
+    notes:
+      fNotes.value.trim()
 
   };
 
@@ -629,7 +1067,9 @@ async function saveEarning() {
     data.amount <= 0
   ) {
 
-    alert("Client, date, and amount are required.");
+    alert(
+      "Client, date, and amount are required."
+    );
 
     return;
 
@@ -644,15 +1084,28 @@ async function saveEarning() {
     if (editingId) {
 
       await updateDoc(
-        doc(db, "earnings", editingId),
+
+        doc(
+          db,
+          "earnings",
+          editingId
+        ),
+
         data
+
       );
 
     } else {
 
       await addDoc(
-        collection(db, "earnings"),
+
+        collection(
+          db,
+          "earnings"
+        ),
+
         data
+
       );
 
     }
@@ -662,13 +1115,14 @@ async function saveEarning() {
 
     await loadEarnings();
 
-    // Ensures old/new client names stay available.
     await loadClients();
-
 
   } catch (e) {
 
-    alert("Error saving: " + e.message);
+    alert(
+      "Error saving: " +
+      e.message
+    );
 
   } finally {
 
@@ -679,70 +1133,119 @@ async function saveEarning() {
 }
 
 
-// ── Edit & Delete ───────────────────────────────────────────────────────────
+// ── Edit Earning ────────────────────────────────────────────────────────────
+
 function editEarning(id) {
 
   editingId = id;
 
-  const entry = allEarnings.find(
-    (x) => x.id === id
-  );
+
+  const entry =
+    allEarnings.find(
+      (item) =>
+        item.id === id
+    );
 
 
   if (!entry) return;
 
 
-  // Compatibility in case an old earning has a company
-  // that isn't currently in the dropdown.
-  const optionExists = [...fCompany.options].some(
-    (option) => option.value === entry.company
-  );
+  const optionExists =
+    [...fCompany.options].some(
+      (option) =>
+        option.value ===
+        entry.company
+    );
 
 
-  if (!optionExists && entry.company) {
+  if (
+    !optionExists &&
+    entry.company
+  ) {
 
-    const option = document.createElement("option");
+    const option =
+      document.createElement(
+        "option"
+      );
 
-    option.value = entry.company;
-    option.textContent = entry.company;
 
-    fCompany.appendChild(option);
+    option.value =
+      entry.company;
+
+    option.textContent =
+      entry.company;
+
+
+    fCompany.appendChild(
+      option
+    );
 
   }
 
 
-  fCompany.value = entry.company;
-  fDate.value = entry.date;
-  fAmount.value = entry.amount;
-  fStatus.value = entry.status;
-  fNotes.value = entry.notes || "";
+  fCompany.value =
+    entry.company;
+
+  fDate.value =
+    entry.date;
+
+  fAmount.value =
+    entry.amount;
+
+  fStatus.value =
+    entry.status;
+
+  fNotes.value =
+    entry.notes || "";
 
 
-  modalTitle.textContent = "Edit Earning";
+  modalTitle.textContent =
+    "Edit Earning";
 
-  modal.classList.add("show");
+
+  modal.classList.add(
+    "show"
+  );
 
 }
 
 
+// ── Delete Earning ──────────────────────────────────────────────────────────
+
 async function deleteEarning(id) {
 
-  if (!confirm("Delete this earning?")) {
+  if (
+    !confirm(
+      "Delete this earning?"
+    )
+  ) {
+
     return;
+
   }
 
 
   try {
 
     await deleteDoc(
-      doc(db, "earnings", id)
+
+      doc(
+        db,
+        "earnings",
+        id
+      )
+
     );
+
 
     await loadEarnings();
 
   } catch (e) {
 
-    alert("Error deleting earning: " + e.message);
+    alert(
+      "Error deleting earning: " +
+      e.message
+    );
 
   }
 
@@ -750,67 +1253,116 @@ async function deleteEarning(id) {
 
 
 // ── Tabs ────────────────────────────────────────────────────────────────────
-document.querySelectorAll(".tab-btn").forEach((btn) => {
 
-  btn.addEventListener("click", () => {
+document
+  .querySelectorAll(
+    ".tab-btn"
+  )
+  .forEach(
+    (btn) => {
 
-    activeTab = btn.dataset.tab;
+      btn.addEventListener(
+        "click",
+        () => {
+
+          activeTab =
+            btn.dataset.tab;
 
 
-    document.querySelectorAll(".tab-btn").forEach((b) => {
+          document
+            .querySelectorAll(
+              ".tab-btn"
+            )
+            .forEach(
+              (button) => {
 
-      b.classList.toggle(
-        "active",
-        b.dataset.tab === activeTab
+                button.classList.toggle(
+
+                  "active",
+
+                  button.dataset.tab ===
+                    activeTab
+
+                );
+
+              }
+            );
+
+
+          render();
+
+        }
       );
 
-    });
-
-
-    render();
-
-  });
-
-});
+    }
+  );
 
 
 // ── Filters ─────────────────────────────────────────────────────────────────
-filterCompany.addEventListener("change", render);
-filterMonth.addEventListener("input", render);
+
+filterCompany.addEventListener(
+  "change",
+  render
+);
+
+
+filterMonth.addEventListener(
+  "input",
+  render
+);
 
 
 document
-  .getElementById("btn-clear-filter")
-  .addEventListener("click", () => {
+  .getElementById(
+    "btn-clear-filter"
+  )
+  .addEventListener(
+    "click",
+    () => {
 
-    filterCompany.value = "";
-    filterMonth.value = "";
+      filterCompany.value = "";
 
-    render();
+      filterMonth.value = "";
 
-  });
+      render();
+
+    }
+  );
 
 
 // ── Render ──────────────────────────────────────────────────────────────────
+
 function render() {
 
-  let data = [...allEarnings];
+  let data =
+    [...allEarnings];
 
 
-  if (filterCompany.value) {
+  if (
+    filterCompany.value
+  ) {
 
-    data = data.filter(
-      (e) => e.company === filterCompany.value
-    );
+    data =
+      data.filter(
+        (entry) =>
+          entry.company ===
+          filterCompany.value
+      );
 
   }
 
 
-  if (filterMonth.value) {
+  if (
+    filterMonth.value
+  ) {
 
-    data = data.filter(
-      (e) => e.date.startsWith(filterMonth.value)
-    );
+    data =
+      data.filter(
+        (entry) =>
+          entry.date.startsWith(
+            filterMonth.value
+          )
+      );
 
   }
 
@@ -818,11 +1370,15 @@ function render() {
   updateSummaryBar(data);
 
 
-  if (activeTab === "all") {
+  if (
+    activeTab === "all"
+  ) {
 
     renderAll(data);
 
-  } else if (activeTab === "company") {
+  } else if (
+    activeTab === "company"
+  ) {
 
     renderByCompany(data);
 
@@ -836,39 +1392,89 @@ function render() {
 
 
 // ── Summary ─────────────────────────────────────────────────────────────────
+
 function updateSummaryBar(data) {
 
-  const total = data.reduce(
-    (sum, entry) => sum + Number(entry.amount || 0),
-    0
-  );
-
-
-  const paid = data
-    .filter((entry) => entry.status === "paid")
-    .reduce(
-      (sum, entry) => sum + Number(entry.amount || 0),
+  const total =
+    data.reduce(
+      (sum, entry) =>
+        sum +
+        Number(
+          entry.amount || 0
+        ),
       0
     );
 
 
-  const pending = data
-    .filter((entry) => entry.status === "pending")
-    .reduce(
-      (sum, entry) => sum + Number(entry.amount || 0),
-      0
-    );
+  const paid =
+    data
+      .filter(
+        (entry) =>
+          entry.status === "paid"
+      )
+      .reduce(
+        (sum, entry) =>
+          sum +
+          Number(
+            entry.amount || 0
+          ),
+        0
+      );
 
 
-  document.getElementById("sum-total").textContent = fmt(total);
-  document.getElementById("sum-paid").textContent = fmt(paid);
-  document.getElementById("sum-pend").textContent = fmt(pending);
-  document.getElementById("sum-count").textContent = data.length;
+  const pending =
+    data
+      .filter(
+        (entry) =>
+          entry.status ===
+          "pending"
+      )
+      .reduce(
+        (sum, entry) =>
+          sum +
+          Number(
+            entry.amount || 0
+          ),
+        0
+      );
+
+
+  document
+    .getElementById(
+      "sum-total"
+    )
+    .textContent =
+      fmt(total);
+
+
+  document
+    .getElementById(
+      "sum-paid"
+    )
+    .textContent =
+      fmt(paid);
+
+
+  document
+    .getElementById(
+      "sum-pend"
+    )
+    .textContent =
+      fmt(pending);
+
+
+  document
+    .getElementById(
+      "sum-count"
+    )
+    .textContent =
+      data.length;
 
 }
 
 
 // ── All View ────────────────────────────────────────────────────────────────
+
 function renderAll(data) {
 
   earningsList.innerHTML = "";
@@ -883,74 +1489,112 @@ function renderAll(data) {
   }
 
 
-  const sorted = [...data].sort(
-    (a, b) => b.date.localeCompare(a.date)
-  );
-
-
   const groups = {};
 
 
-  sorted.forEach((entry) => {
+  data.forEach(
+    (entry) => {
 
-    const month = entry.date.slice(0, 7);
+      const month =
+        entry.date.slice(
+          0,
+          7
+        );
 
-    if (!groups[month]) {
-      groups[month] = [];
+
+      if (!groups[month]) {
+
+        groups[month] = [];
+
+      }
+
+
+      groups[month].push(
+        entry
+      );
+
     }
-
-    groups[month].push(entry);
-
-  });
+  );
 
 
-  Object.entries(groups)
-    .sort(([a], [b]) => b.localeCompare(a))
-    .forEach(([month, items]) => {
+  Object
+    .entries(groups)
+    .sort(
+      ([a], [b]) =>
+        b.localeCompare(a)
+    )
+    .forEach(
+      ([month, items]) => {
 
-      const total = items.reduce(
-        (sum, entry) => sum + Number(entry.amount || 0),
-        0
-      );
+        const total =
+          items.reduce(
+            (sum, entry) =>
+              sum +
+              Number(
+                entry.amount || 0
+              ),
+            0
+          );
 
 
-      const label = formatMonth(month);
+        earningsList.appendChild(
 
+          makeGroup(
 
-      earningsList.appendChild(
-        makeGroup(
-          label,
-          `${items.length} ${items.length === 1 ? "entry" : "entries"} · ${fmt(total)} total`,
-          items
-        )
-      );
+            formatMonth(month),
 
-    });
+            `${items.length} ${
+              items.length === 1
+                ? "entry"
+                : "entries"
+            } · ${fmt(total)} total`,
+
+            items
+
+          )
+
+        );
+
+      }
+    );
 
 }
 
 
 // ── By Client ───────────────────────────────────────────────────────────────
+
 function renderByCompany(data) {
 
   const groups = {};
 
 
-  data.forEach((entry) => {
+  data.forEach(
+    (entry) => {
 
-    if (!groups[entry.company]) {
-      groups[entry.company] = [];
+      if (
+        !groups[entry.company]
+      ) {
+
+        groups[entry.company] =
+          [];
+
+      }
+
+
+      groups[
+        entry.company
+      ].push(entry);
+
     }
-
-    groups[entry.company].push(entry);
-
-  });
+  );
 
 
   earningsList.innerHTML = "";
 
 
-  if (!Object.keys(groups).length) {
+  if (
+    !Object.keys(groups).length
+  ) {
 
     emptyState();
 
@@ -959,83 +1603,120 @@ function renderByCompany(data) {
   }
 
 
-  Object.entries(groups)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .forEach(([company, items]) => {
+  Object
+    .entries(groups)
+    .sort(
+      ([a], [b]) =>
+        a.localeCompare(b)
+    )
+    .forEach(
+      ([company, items]) => {
 
-      const total = items.reduce(
-        (sum, entry) => sum + Number(entry.amount || 0),
-        0
-      );
+        const total =
+          items.reduce(
+            (sum, entry) =>
+              sum +
+              Number(
+                entry.amount || 0
+              ),
+            0
+          );
 
 
-      const paid = items
-        .filter((entry) => entry.status === "paid")
-        .reduce(
-          (sum, entry) => sum + Number(entry.amount || 0),
-          0
+        const pending =
+          items
+            .filter(
+              (entry) =>
+                entry.status ===
+                "pending"
+            )
+            .reduce(
+              (sum, entry) =>
+                sum +
+                Number(
+                  entry.amount || 0
+                ),
+              0
+            );
+
+
+        let subtitle =
+          `${items.length} ${
+            items.length === 1
+              ? "entry"
+              : "entries"
+          } · ${fmt(total)} total`;
+
+
+        if (
+          pending > 0
+        ) {
+
+          subtitle +=
+            ` · ${fmt(pending)} pending`;
+
+        } else {
+
+          subtitle +=
+            " · all paid";
+
+        }
+
+
+        earningsList.appendChild(
+
+          makeGroup(
+            company,
+            subtitle,
+            items
+          )
+
         );
-
-
-      const pending = items
-        .filter((entry) => entry.status === "pending")
-        .reduce(
-          (sum, entry) => sum + Number(entry.amount || 0),
-          0
-        );
-
-
-      let subtitle =
-        `${items.length} ${items.length === 1 ? "entry" : "entries"} · ${fmt(total)} total`;
-
-
-      if (pending > 0) {
-
-        subtitle += ` · ${fmt(pending)} pending`;
-
-      } else if (paid > 0) {
-
-        subtitle += ` · all paid`;
 
       }
-
-
-      earningsList.appendChild(
-        makeGroup(
-          company,
-          subtitle,
-          items
-        )
-      );
-
-    });
+    );
 
 }
 
 
 // ── By Month ────────────────────────────────────────────────────────────────
+
 function renderByMonth(data) {
 
   const groups = {};
 
 
-  data.forEach((entry) => {
+  data.forEach(
+    (entry) => {
 
-    const key = entry.date.slice(0, 7);
+      const key =
+        entry.date.slice(
+          0,
+          7
+        );
 
-    if (!groups[key]) {
-      groups[key] = [];
+
+      if (!groups[key]) {
+
+        groups[key] = [];
+
+      }
+
+
+      groups[key].push(
+        entry
+      );
+
     }
-
-    groups[key].push(entry);
-
-  });
+  );
 
 
   earningsList.innerHTML = "";
 
 
-  if (!Object.keys(groups).length) {
+  if (
+    !Object.keys(groups).length
+  ) {
 
     emptyState();
 
@@ -1044,78 +1725,150 @@ function renderByMonth(data) {
   }
 
 
-  Object.entries(groups)
-    .sort(([a], [b]) => b.localeCompare(a))
-    .forEach(([month, items]) => {
+  Object
+    .entries(groups)
+    .sort(
+      ([a], [b]) =>
+        b.localeCompare(a)
+    )
+    .forEach(
+      ([month, items]) => {
 
-      const total = items.reduce(
-        (sum, entry) => sum + Number(entry.amount || 0),
-        0
-      );
+        const total =
+          items.reduce(
+            (sum, entry) =>
+              sum +
+              Number(
+                entry.amount || 0
+              ),
+            0
+          );
 
 
-      earningsList.appendChild(
-        makeGroup(
-          formatMonth(month),
-          `${items.length} ${items.length === 1 ? "entry" : "entries"} · ${fmt(total)} total`,
-          items
-        )
-      );
+        earningsList.appendChild(
 
-    });
+          makeGroup(
+
+            formatMonth(month),
+
+            `${items.length} ${
+              items.length === 1
+                ? "entry"
+                : "entries"
+            } · ${fmt(total)} total`,
+
+            items
+
+          )
+
+        );
+
+      }
+    );
 
 }
 
 
 // ── Build Group ─────────────────────────────────────────────────────────────
-function makeGroup(title, subtitle, items) {
 
-  const section = document.createElement("div");
+function makeGroup(
+  title,
+  subtitle,
+  items
+) {
 
-  section.className = "group-section";
-
-
-  const header = document.createElement("div");
-
-  header.className = "group-header";
-
-
-  const headerText = document.createElement("div");
-
-  headerText.className = "group-header-text";
+  const section =
+    document.createElement(
+      "div"
+    );
 
 
-  const titleElement = document.createElement("span");
-
-  titleElement.className = "group-title";
-  titleElement.textContent = title;
+  section.className =
+    "group-section";
 
 
-  const subtitleElement = document.createElement("span");
+  const header =
+    document.createElement(
+      "div"
+    );
 
-  subtitleElement.className = "group-sub";
-  subtitleElement.textContent = subtitle;
+
+  header.className =
+    "group-header";
 
 
-  headerText.appendChild(titleElement);
-  headerText.appendChild(subtitleElement);
+  const headerText =
+    document.createElement(
+      "div"
+    );
 
-  header.appendChild(headerText);
 
-  section.appendChild(header);
+  headerText.className =
+    "group-header-text";
+
+
+  const titleElement =
+    document.createElement(
+      "span"
+    );
+
+
+  titleElement.className =
+    "group-title";
+
+  titleElement.textContent =
+    title;
+
+
+  const subtitleElement =
+    document.createElement(
+      "span"
+    );
+
+
+  subtitleElement.className =
+    "group-sub";
+
+  subtitleElement.textContent =
+    subtitle;
+
+
+  headerText.appendChild(
+    titleElement
+  );
+
+
+  headerText.appendChild(
+    subtitleElement
+  );
+
+
+  header.appendChild(
+    headerText
+  );
+
+
+  section.appendChild(
+    header
+  );
 
 
   [...items]
     .sort(
-      (a, b) => b.date.localeCompare(a.date)
+      (a, b) =>
+        b.date.localeCompare(
+          a.date
+        )
     )
-    .forEach((entry) => {
+    .forEach(
+      (entry) => {
 
-      section.appendChild(
-        makeEntryRow(entry)
-      );
+        section.appendChild(
+          makeEntryRow(entry)
+        );
 
-    });
+      }
+    );
 
 
   return section;
@@ -1124,105 +1877,242 @@ function makeGroup(title, subtitle, items) {
 
 
 // ── Entry Row ───────────────────────────────────────────────────────────────
+
 function makeEntryRow(entry) {
 
-  const row = document.createElement("div");
-
-  row.className = "entry-row";
-
-
-  const left = document.createElement("div");
-
-  left.className = "entry-left";
+  const row =
+    document.createElement(
+      "div"
+    );
 
 
-  const company = document.createElement("span");
-
-  company.className = "entry-company";
-  company.textContent = entry.company;
+  row.className =
+    "entry-row";
 
 
-  const date = document.createElement("span");
+  const left =
+    document.createElement(
+      "div"
+    );
 
-  date.className = "entry-date";
-  date.textContent = formatDate(entry.date);
+
+  left.className =
+    "entry-left";
 
 
-  left.appendChild(company);
-  left.appendChild(date);
+  const company =
+    document.createElement(
+      "span"
+    );
+
+
+  company.className =
+    "entry-company";
+
+  company.textContent =
+    entry.company;
+
+
+  const date =
+    document.createElement(
+      "span"
+    );
+
+
+  date.className =
+    "entry-date";
+
+  date.textContent =
+    formatDate(
+      entry.date
+    );
+
+
+  left.appendChild(
+    company
+  );
+
+
+  left.appendChild(
+    date
+  );
 
 
   if (entry.notes) {
 
-    const notes = document.createElement("span");
+    const notes =
+      document.createElement(
+        "span"
+      );
 
-    notes.className = "entry-notes";
-    notes.textContent = entry.notes;
 
-    left.appendChild(notes);
+    notes.className =
+      "entry-notes";
+
+    notes.textContent =
+      entry.notes;
+
+
+    left.appendChild(
+      notes
+    );
 
   }
 
 
-  const right = document.createElement("div");
-
-  right.className = "entry-right";
-
-
-  const amount = document.createElement("span");
-
-  amount.className = "entry-amount";
-  amount.textContent = fmt(entry.amount);
+  const right =
+    document.createElement(
+      "div"
+    );
 
 
-  const badge = document.createElement("span");
-
-  badge.className = `badge ${entry.status}`;
-  badge.textContent = entry.status;
+  right.className =
+    "entry-right";
 
 
-  const actions = document.createElement("div");
-
-  actions.className = "entry-actions";
-
-
-  const editButton = document.createElement("button");
-
-  editButton.className = "btn-icon";
-  editButton.type = "button";
-  editButton.title = "Edit";
-  editButton.setAttribute("aria-label", "Edit earning");
-  editButton.textContent = "✏️";
-
-  editButton.addEventListener("click", () => {
-    editEarning(entry.id);
-  });
+  const amount =
+    document.createElement(
+      "span"
+    );
 
 
-  const deleteButton = document.createElement("button");
+  amount.className =
+    "entry-amount";
 
-  deleteButton.className = "btn-icon";
-  deleteButton.type = "button";
-  deleteButton.title = "Delete";
-  deleteButton.setAttribute("aria-label", "Delete earning");
-  deleteButton.textContent = "🗑️";
-
-  deleteButton.addEventListener("click", () => {
-    deleteEarning(entry.id);
-  });
+  amount.textContent =
+    fmt(
+      entry.amount
+    );
 
 
-  actions.appendChild(editButton);
-  actions.appendChild(deleteButton);
+  const badge =
+    document.createElement(
+      "span"
+    );
 
 
-  right.appendChild(amount);
-  right.appendChild(badge);
-  right.appendChild(actions);
+  badge.className =
+    `badge ${entry.status}`;
+
+  badge.textContent =
+    entry.status;
 
 
-  row.appendChild(left);
-  row.appendChild(right);
+  const actions =
+    document.createElement(
+      "div"
+    );
+
+
+  actions.className =
+    "entry-actions";
+
+
+  const editButton =
+    document.createElement(
+      "button"
+    );
+
+
+  editButton.className =
+    "btn-icon";
+
+  editButton.type =
+    "button";
+
+  editButton.title =
+    "Edit";
+
+  editButton.setAttribute(
+    "aria-label",
+    "Edit earning"
+  );
+
+  editButton.textContent =
+    "✏️";
+
+
+  editButton.addEventListener(
+    "click",
+    () => {
+
+      editEarning(
+        entry.id
+      );
+
+    }
+  );
+
+
+  const deleteButton =
+    document.createElement(
+      "button"
+    );
+
+
+  deleteButton.className =
+    "btn-icon";
+
+  deleteButton.type =
+    "button";
+
+  deleteButton.title =
+    "Delete";
+
+  deleteButton.setAttribute(
+    "aria-label",
+    "Delete earning"
+  );
+
+  deleteButton.textContent =
+    "🗑️";
+
+
+  deleteButton.addEventListener(
+    "click",
+    () => {
+
+      deleteEarning(
+        entry.id
+      );
+
+    }
+  );
+
+
+  actions.appendChild(
+    editButton
+  );
+
+
+  actions.appendChild(
+    deleteButton
+  );
+
+
+  right.appendChild(
+    amount
+  );
+
+
+  right.appendChild(
+    badge
+  );
+
+
+  right.appendChild(
+    actions
+  );
+
+
+  row.appendChild(
+    left
+  );
+
+
+  row.appendChild(
+    right
+  );
 
 
   return row;
@@ -1231,30 +2121,47 @@ function makeEntryRow(entry) {
 
 
 // ── Empty State ─────────────────────────────────────────────────────────────
+
 function emptyState() {
 
   earningsList.innerHTML = `
+
     <div class="empty-state">
-      <div class="empty-icon">₱</div>
-      <div class="empty-title">No earnings found</div>
+
+      <div class="empty-icon">
+        ₱
+      </div>
+
+      <div class="empty-title">
+        No earnings found
+      </div>
+
       <div class="empty-text">
         Add an earning or change your filters.
       </div>
+
     </div>
+
   `;
 
 }
 
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
+
 function fmt(number) {
 
-  return "₱" + Number(number || 0).toLocaleString(
-    "en-PH",
-    {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }
+  return (
+    "₱" +
+    Number(
+      number || 0
+    ).toLocaleString(
+      "en-PH",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }
+    )
   );
 
 }
@@ -1263,7 +2170,8 @@ function fmt(number) {
 function formatDate(date) {
 
   return new Date(
-    date + "T00:00:00"
+    date +
+    "T00:00:00"
   ).toLocaleDateString(
     "en-PH",
     {
@@ -1279,7 +2187,8 @@ function formatDate(date) {
 function formatMonth(month) {
 
   return new Date(
-    month + "-01T00:00:00"
+    month +
+    "-01T00:00:00"
   ).toLocaleDateString(
     "en-PH",
     {
@@ -1293,34 +2202,44 @@ function formatMonth(month) {
 
 function setAuthError(message) {
 
-  authError.textContent = message;
+  authError.textContent =
+    message;
 
 }
 
 
 function setSaveLoading(on) {
 
-  btnSave.textContent = on
-    ? "Saving…"
-    : "Save";
+  btnSave.textContent =
+    on
+      ? "Saving…"
+      : "Save";
 
-  btnSave.disabled = on;
+
+  btnSave.disabled =
+    on;
 
 }
 
 
 function showApp() {
 
-  authScreen.style.display = "none";
-  appScreen.style.display = "block";
+  authScreen.style.display =
+    "none";
+
+  appScreen.style.display =
+    "block";
 
 }
 
 
 function showAuth() {
 
-  authScreen.style.display = "flex";
-  appScreen.style.display = "none";
+  authScreen.style.display =
+    "flex";
+
+  appScreen.style.display =
+    "none";
 
 }
 
@@ -1356,7 +2275,9 @@ function friendlyError(code) {
   };
 
 
-  return map[code] ||
-    "Something went wrong. Try again.";
+  return (
+    map[code] ||
+    "Something went wrong. Try again."
+  );
 
 }
