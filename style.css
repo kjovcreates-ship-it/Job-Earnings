@@ -1527,3 +1527,33 @@ body.light-mode .modal-card {
   }
 
 }
+
+
+/* Developer credits */
+.auth-credit {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.app-footer {
+  margin-top: 50px;
+  padding: 24px 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+.auth-credit a,
+.app-footer a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-credit a:hover,
+.app-footer a:hover {
+  text-decoration: underline;
+}
