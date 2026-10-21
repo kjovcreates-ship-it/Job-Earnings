@@ -50,6 +50,7 @@ const db = getFirestore(app);
 let currentUser = null;
 let allEarnings = [];
 let allClients = [];
+let archivedClientNames = new Set();
 let editingId = null;
 let activeTab = "all";
 let reopenEarningModalAfterClient = false;
@@ -363,10 +364,10 @@ async function loadClients() {
 
     const snap = await getDocs(q);
 
-    allClients = snap.docs.map((d) => ({
-      id: d.id,
-      ...d.data()
-    }));
+    const clientDocs = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    archivedClientNames = new Set(clientDocs.filter(c => c.archived).map(c => String(c.name || "").toLowerCase()));
+    allClients = clientDocs.filter(c => !c.archived);
+    allClients.forEach(c => archivedClientNames.delete(String(c.name || "").toLowerCase()));
 
     mergeExistingEarningCompanies();
     sortClients();
@@ -380,6 +381,7 @@ async function loadClients() {
     );
 
     allClients = [];
+    archivedClientNames = new Set();
 
     mergeExistingEarningCompanies();
     sortClients();
@@ -410,7 +412,7 @@ function mergeExistingEarningCompanies() {
         earning.company || ""
       ).trim();
 
-    if (!name) return;
+    if (!name || archivedClientNames.has(name.toLowerCase())) return;
 
 
     if (
@@ -650,7 +652,8 @@ async function saveClient() {
 
     const data = {
       uid: currentUser.uid,
-      name
+      name,
+      archived: false
     };
 
 
@@ -661,6 +664,7 @@ async function saveClient() {
       );
 
 
+    archivedClientNames.delete(name.toLowerCase());
     allClients.push({
       id: docRef.id,
       ...data
@@ -703,6 +707,65 @@ async function saveClient() {
 
 }
 
+
+// ── Manage Clients ───────────────────────────────────────────────────
+const manageClientsModal = document.getElementById("manage-clients-modal");
+const manageClientsList = document.getElementById("manage-clients-list");
+
+function closeManageClients() { manageClientsModal.classList.remove("show"); }
+
+document.getElementById("btn-manage-clients").addEventListener("click", () => {
+  renderManageClients();
+  manageClientsModal.classList.add("show");
+});
+document.getElementById("btn-close-manage-clients").addEventListener("click", closeManageClients);
+document.getElementById("btn-done-manage-clients").addEventListener("click", closeManageClients);
+manageClientsModal.addEventListener("click", e => { if (e.target === manageClientsModal) closeManageClients(); });
+
+function renderManageClients() {
+  manageClientsList.replaceChildren();
+  if (!allClients.length) {
+    const empty = document.createElement("p");
+    empty.className = "manage-clients-empty";
+    empty.textContent = "No clients to manage yet.";
+    manageClientsList.appendChild(empty);
+    return;
+  }
+  allClients.forEach(client => {
+    const item = document.createElement("div");
+    item.className = "manage-client-row";
+    const name = document.createElement("span");
+    name.textContent = client.name;
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "manage-client-remove";
+    remove.setAttribute("aria-label", `Remove ${client.name}`);
+    remove.title = `Remove ${client.name}`;
+    remove.innerHTML = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m5 4v7m4-7v7"/></svg>';
+    remove.addEventListener("click", async () => {
+      if (!currentUser || !confirm(`Remove "${client.name}" from your client list? Existing earnings will stay untouched.`)) return;
+      remove.disabled = true;
+      try {
+        // Archive instead of deleting so names referenced by old earnings don't reappear.
+        if (client.id) {
+          await updateDoc(doc(db, "clients", client.id), { archived: true });
+        } else {
+          await addDoc(collection(db, "clients"), { uid: currentUser.uid, name: client.name, archived: true });
+        }
+        archivedClientNames.add(client.name.toLowerCase());
+        allClients = allClients.filter(c => c.name.toLowerCase() !== client.name.toLowerCase());
+        populateClientDropdowns();
+        renderManageClients();
+        render();
+      } catch (error) {
+        alert("Couldn't remove client: " + error.message);
+        remove.disabled = false;
+      }
+    });
+    item.append(name, remove);
+    manageClientsList.appendChild(item);
+  });
+}
 
 // ── Earning Modal ────────────────────────────────────────────────────
 
@@ -1811,3 +1874,7 @@ function friendlyError(code) {
   );
 
 }
+
+// Navigation shortcut (reuses existing Manage Clients behavior).
+const sidebarManage = document.getElementById("nav-manage-clients");
+if (sidebarManage) sidebarManage.addEventListener("click", () => document.getElementById("btn-manage-clients").click());
