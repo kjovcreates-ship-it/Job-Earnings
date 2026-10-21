@@ -8,6 +8,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
   setPersistence,
@@ -234,6 +235,53 @@ authPass.addEventListener("keydown", (e) => {
 
 });
 
+
+// Password recovery: Firebase Authentication handles the email and token.
+const resetPanel = document.getElementById("password-reset-panel");
+const resetEmail = document.getElementById("reset-email");
+const resetMessage = document.getElementById("reset-message");
+const resetButton = document.getElementById("btn-send-reset");
+
+document.getElementById("btn-forgot-password").addEventListener("click", () => {
+  resetEmail.value = authEmail.value.trim();
+  resetMessage.textContent = "";
+  resetMessage.className = "";
+  resetPanel.hidden = false;
+  resetEmail.focus();
+});
+document.getElementById("btn-close-reset").addEventListener("click", () => {
+  resetPanel.hidden = true;
+});
+resetEmail.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") resetButton.click();
+});
+resetButton.addEventListener("click", async () => {
+  const email = resetEmail.value.trim();
+  resetMessage.className = "";
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    resetMessage.textContent = "Enter a valid email address.";
+    resetMessage.className = "reset-error";
+    return;
+  }
+  resetButton.disabled = true;
+  resetButton.textContent = "Sending…";
+  resetMessage.textContent = "";
+  try {
+    await sendPasswordResetEmail(auth, email);
+    resetMessage.textContent = "If an account exists for that email, you'll receive a reset link shortly. Check your spam folder too.";
+    resetMessage.className = "reset-success";
+  } catch (error) {
+    resetMessage.textContent = error.code === "auth/too-many-requests"
+      ? "Too many attempts. Please try again later."
+      : error.code === "auth/invalid-email"
+        ? "Enter a valid email address."
+        : "Couldn't send the email. Please try again.";
+    resetMessage.className = "reset-error";
+  } finally {
+    resetButton.disabled = false;
+    resetButton.textContent = "Send reset link";
+  }
+});
 
 async function setChosenPersistence() {
 

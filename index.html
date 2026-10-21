@@ -33,6 +33,8 @@
         autocomplete="current-password"
       />
 
+      <div class="auth-options"><button type="button" id="btn-forgot-password" class="forgot-link">Forgot password?</button></div>
+
       <div class="remember-row">
         <label class="remember-label">
           <input id="remember-me" type="checkbox" checked />
@@ -46,6 +48,15 @@
         <button class="btn-primary" id="btn-login">Log In</button>
         <button class="btn-secondary" id="btn-register">Register</button>
       </div>
+
+      <section id="password-reset-panel" class="password-reset-panel" hidden aria-label="Reset password">
+        <div class="reset-top"><strong>Reset your password</strong><button id="btn-close-reset" type="button" aria-label="Close password reset">×</button></div>
+        <p>Enter your account email and we’ll send you a link to set a new password.</p>
+        <label for="reset-email">Email address</label>
+        <input type="email" id="reset-email" autocomplete="email" placeholder="you@email.com" />
+        <div id="reset-message" role="status" aria-live="polite"></div>
+        <button type="button" class="btn-primary reset-submit" id="btn-send-reset">Send reset link</button>
+      </section>
 
       <div class="auth-credit">Developed by <a href="https://kjovcreates.vercel.app" target="_blank" rel="noopener noreferrer">Kjov</a></div>
 
