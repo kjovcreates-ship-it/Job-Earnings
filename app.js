@@ -1922,7 +1922,3 @@ function friendlyError(code) {
   );
 
 }
-
-// Navigation shortcut (reuses existing Manage Clients behavior).
-const sidebarManage = document.getElementById("nav-manage-clients");
-if (sidebarManage) sidebarManage.addEventListener("click", () => document.getElementById("btn-manage-clients").click());
